@@ -8,4 +8,4 @@ app.error(express('893916d7644bd3b0743da13e784105b7', 'http://localhost:6943/api
 app.get('/', function mainHandler(req, res) {
   throw new Error('Broke!');
 });
-app.listen(3000);
+app.listen(6943);
