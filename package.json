@@ -1,0 +1,27 @@
+{
+  "name": "ratchet.io",
+  "description": "A standalone (Node.js) client for Ratchet.io",
+  "keywords": ["ratchetio", "ratchet", "python"],
+  "version": "0.1",
+  "repository": "git://github.com/coryvirok/node_ratchet.git",
+  "author": "Cory Virok <cory@ratchet.io>",
+  "license": "",
+  "main": "index",
+  "scripts": {
+    "test": "make test"
+  },
+  "engines": {
+    "node": ">= 0.6.0"
+  },
+  "dependencies": {
+    "node-uuid": "*"
+  },
+  "devDependencies": {
+    "connect": "*",
+    "express": "*",
+    "mocha": "*",
+    "should": "*",
+    "nock": "*",
+    "glob": "*"
+  }
+}
