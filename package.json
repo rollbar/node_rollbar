@@ -8,20 +8,14 @@
   "license": "",
   "main": "index",
   "scripts": {
-    "test": "make test"
   },
   "engines": {
     "node": ">= 0.6.0"
   },
   "dependencies": {
-    "node-uuid": "*"
   },
   "devDependencies": {
     "connect": "*",
-    "express": "*",
-    "mocha": "*",
-    "should": "*",
-    "nock": "*",
-    "glob": "*"
+    "express": "*"
   }
 }
