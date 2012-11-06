@@ -10,7 +10,6 @@ node_ratchet is a generic library for reporting exceptions and other messages to
     // record a generic message and send to ratchet.io
     ratchet.reportMessage("Hello world!");
 
-
 Requirements
 ------------
 node_ratchet requires:
@@ -27,14 +26,17 @@ Install using the node package manager, npm::
 Configuration
 -------------
 In your main application, require and initialize using your access_token::
+
     var ratchet = require("ratchet");
     ratchet.init("ACCESS_TOKEN");
-
+    
 Other options can be passed into the init() function using a second parameter. E.g.::
+
     // Queue up and report messages/exceptions to ratchet every 5 seconds
     ratchet.init("ACCESS_TOKEN", {handler: "setInterval", handlerInterval: 5});
 
 When you are finished using ratchet, clean up any remaining items in the queue using the shutdown function::
+
     ratchet.shutdown();
 
 
@@ -76,11 +78,11 @@ endpoint
 root
     The path to your code, (not including any trailing slash) which will be used to link source files on ratchet.io.
 
-    E.g. `/Users/bob/Development`
+    E.g. ``/Users/bob/Development``
 branch
     The branch in your version control system for this code
 
-    E.g. `master`
+    E.g. ``master``
 
 
 Contributing
