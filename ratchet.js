@@ -7,6 +7,7 @@ var parser = require('./lib/parser');
 var initialized = false;
 
 /**
+ *
  * Ratchet:
  *
  *  Handle caught and uncaught exceptions, and report messages back to ratchet.
@@ -17,48 +18,48 @@ var initialized = false;
  *
  *  Express - 
  *
- *    var express = require('express');
- *    var ratchet = require('ratchet');
- *
- *    var app = express();
- *   
- *    app.get('/', function(req, res) {
- *      ...
- *    });
- *   
- *    // Use the ratchet error handler to send exceptions to your ratchet.io account
- *    app.use(ratchet.errorHandler('RATCHET_ACCESS_TOKEN'));
- *
- *    app.listen(6943);
+ *     var express = require('express');
+ *     var ratchet = require('ratchet');
+ * 
+ *     var app = express();
+ *    
+ *     app.get('/', function(req, res) {
+ *       ...
+ *     });
+ *    
+ *     // Use the ratchet error handler to send exceptions to your ratchet.io account
+ *     app.use(ratchet.errorHandler('RATCHET_ACCESS_TOKEN'));
+ * 
+ *     app.listen(6943);
  *
  *  Standalone - 
  *
- *    var ratchet = require('ratchet');
- *    ratchet.init('RATCHET_ACCESS_TOKEN');
- *    ratchet.reportMessage('Hello world', 'debug');
- *    ratchet.shutdown(); // Processes any remaining items and stops any running timers
+ *     var ratchet = require('ratchet');
+ *     ratchet.init('RATCHET_ACCESS_TOKEN');
+ *     ratchet.reportMessage('Hello world', 'debug');
+ *     ratchet.shutdown(); // Processes any remaining items and stops any running timers
  *
  *  Uncaught exceptions - 
  *
- *    var ratchet = require('ratchet');
- *    ratchet.handleUncaughtExceptions('RATCHET_ACCESS_TOKEN');
+ *     var ratchet = require('ratchet');
+ *     ratchet.handleUncaughtExceptions('RATCHET_ACCESS_TOKEN');
  *
  *  Send exceptions and request data -
  *
- *    app.get('/', function(req, res) {
- *      try {
- *        ...
- *      } catch (e) {
- *        ratchet.handleError(e, req);
- *      }
- *    });
+ *     app.get('/', function(req, res) {
+ *       try {
+ *         ...
+ *       } catch (e) {
+ *         ratchet.handleError(e, req);
+ *       }
+ *     });
  *
  *  Track people - 
  *
- *    app.get('/', function(req, res) {
- *      req.userId = 12345; // or req.user_id
- *      ratchet.reportMessage('Interesting event', req);
- *    });
+ *     app.get('/', function(req, res) {
+ *       req.userId = 12345; // or req.user_id
+ *       ratchet.reportMessage('Interesting event', req);
+ *     });
  */
 
 exports.init = function(accessToken, options) {
