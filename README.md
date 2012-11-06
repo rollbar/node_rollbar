@@ -37,6 +37,7 @@ app.get('/', function(req, res) {
 app.use(ratchet.errorHandler('RATCHET_ACCESS_TOKEN'));
 
 app.listen(6943);
+```
 
 
 ### Standalone
@@ -66,15 +67,15 @@ ratchet.shutdown();
 
 `ratchet.init()` takes the following configuration options (pass in the second parameter):
 
-- *host*: The hostname of the server the node.js process is running on
+- **host**: The hostname of the server the node.js process is running on
     
     _default:_ `os.hostname()`
 
-- *environment*: The environment the code is running in.
+- **environment**: The environment the code is running in.
 
     _default:_ `production`
 
-- *handler*: The method that the notifier will use to report exceptions.
+- **handler**: The method that the notifier will use to report exceptions.
 
     Supported values:
 
@@ -84,23 +85,23 @@ ratchet.shutdown();
 
     _default:_ `setInterval`
 
-- *handlerInterval*: If the handler is `setInterval`, this is the number of seconds between batch posts of items to ratchet.io.
+- **handlerInterval**: If the handler is `setInterval`, this is the number of seconds between batch posts of items to ratchet.io.
 
     _default:_ `3`
 
-- *batchSize*: The max number of items sent to ratchet.io at a time.
+- **batchSize**: The max number of items sent to ratchet.io at a time.
 
     _default:_ `10`
 
-- *endpoint*: The Ratchet.io API base url.
+- **endpoint**: The Ratchet.io API base url.
 
     _default:_ `https://submit.ratchet.io/api/1/`
 
-- *root*: The path to your code, (not including any trailing slash) which will be used to link source files on ratchet.io.
+- **root**: The path to your code, (not including any trailing slash) which will be used to link source files on ratchet.io.
 
     e.g. `/Users/bob/Development`
 
-- *branch*: The branch in your version control system for this code
+- **branch**: The branch in your version control system for this code
 
     e.g. `master`
 
