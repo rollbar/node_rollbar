@@ -5,14 +5,19 @@ Requirements
 ------------
 node_ratchet requires:
 
+node-uuid
+
 
 Installation
 ------------
-
+npm install ratchet
 
 Configuration
 -------------
-
+var ratchet = require("ratchet");
+ratchet.init("ACCESS_TOKEN");
+ratchet.reportMessage("Hello world!");
+ratchet.shutdown();
 
 Contributing
 ------------
