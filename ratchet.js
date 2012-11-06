@@ -142,8 +142,8 @@ exports.reportMessage = notifier.reportMessage;
 exports.handleError = notifier.handleError;
 
 
-exports.shutdown = function() {
-  notifier.shutdown();
+exports.shutdown = function(callback) {
+  notifier.shutdown(callback);
 };
 
 
@@ -185,7 +185,9 @@ exports.handleUncaughtExceptions = function(accessToken, options) {
   process.on('uncaughtException', function(err) {
     notifier.changeHandler('inline');
     notifier.handleError(err, function(err) {
-      exports.shutdown();
+      exports.shutdown(function(e) {
+        process.exit(1);
+      });
     });
   });
 };
