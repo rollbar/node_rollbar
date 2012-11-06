@@ -1,5 +1,5 @@
 {
-  "name": "node-ratchet",
+  "name": "ratchetio",
   "description": "A standalone (Node.js) client for Ratchet.io",
   "keywords": [
     "ratchetio",
