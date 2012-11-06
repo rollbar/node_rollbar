@@ -45,10 +45,12 @@ ratchet.init() takes the following configuration options::
 
 host
     The hostname of the server the node.js process is running on
+
     **default:** ``os.hostname()``
 environment
     The environment the code is running in.
-    **default:** `production`
+
+    **default:** ``production``
 handler
     The method that the notifier will use to report exceptions.
 
@@ -57,16 +59,20 @@ handler
     - setInterval -- all items that are queued up are sent to ratchet.io in batches in a setInterval callback
     - nextTick -- all items that are queued up are sent to ratchet.io in a process.nextTick callback
     - inline -- items are sent to ratchet.io as they are queued up, one at-a-time
-    **default:** `setInterval`
+
+    **default:** ``setInterval``
 handlerInterval
     If the handler is `setInterval`, this is the number of seconds between batch posts of items to ratchet.io.
-    **default:** `3`
+
+    **default:** ``3``
 batchSize
     The max number of items sent to ratchet.io at a time.
-    **default:** `10`
+
+    **default:** ``10``
 endpoint
     The url to send items to.
-    **default:** `https://submit.ratchet.io/api/1/`
+
+    **default:** ``https://submit.ratchet.io/api/1/``
 root
     The path to your code, (not including any trailing slash) which will be used to link source files on ratchet.io.
 
