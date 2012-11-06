@@ -21,7 +21,7 @@ Installation
 ------------
 Install using the node package manager, npm::
 
-    npm install --save ratchet
+    npm install --save node-ratchet
 
 Configuration
 -------------
@@ -90,6 +90,10 @@ Contributing
 
 Contributions are welcome. The project is hosted on github at http://github.com/ratchetio/node_ratchet
 
+Examples
+--------
+
+See the examples directory for more uses.
 
 Additional Help
 ---------------
