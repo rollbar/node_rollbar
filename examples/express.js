@@ -8,8 +8,8 @@ app.get('/', function(req, res) {
   throw new Error('Hello World');
 });
 
-app.use(ratchet.errorHandler("8802be7c990a4922beadaaefb6e0327b",
+app.use(ratchet.errorHandler("ACCESS_TOKEN",
                              {environment: 'playground'}));
 
-console.log('browse to http://localhost:9876/');
+console.log('browse to http://localhost:9876/ then go to your ratchet.io account: http://ratchet.io/');
 app.listen(9876);
