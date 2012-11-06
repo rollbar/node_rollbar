@@ -19,7 +19,7 @@ var initialized = false;
  *  Express - 
  *
  *     var express = require('express');
- *     var ratchet = require('ratchet');
+ *     var ratchet = require('node-ratchet');
  * 
  *     var app = express();
  *    
@@ -34,14 +34,14 @@ var initialized = false;
  *
  *  Standalone - 
  *
- *     var ratchet = require('ratchet');
+ *     var ratchet = require('node-ratchet');
  *     ratchet.init('RATCHET_ACCESS_TOKEN');
  *     ratchet.reportMessage('Hello world', 'debug');
  *     ratchet.shutdown(); // Processes any remaining items and stops any running timers
  *
  *  Uncaught exceptions - 
  *
- *     var ratchet = require('ratchet');
+ *     var ratchet = require('node-ratchet');
  *     ratchet.handleUncaughtExceptions('RATCHET_ACCESS_TOKEN');
  *
  *  Send exceptions and request data -

@@ -4,7 +4,7 @@ node_ratchet
 node_ratchet is a generic library for reporting exceptions and other messages to Ratchet.io_::
 
     // include and initialize the ratchet library with your access token
-    var ratchet = require("ratchet");
+    var ratchet = require("node-ratchet");
     ratchet.init("ACCESS_TOKEN");
 
     // record a generic message and send to ratchet.io
@@ -27,7 +27,7 @@ Configuration
 -------------
 In your main application, require and initialize using your access_token::
 
-    var ratchet = require("ratchet");
+    var ratchet = require("node-ratchet");
     ratchet.init("ACCESS_TOKEN");
     
 Other options can be passed into the init() function using a second parameter. E.g.::

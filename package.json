@@ -1,5 +1,5 @@
 {
-  "name": "ratchet",
+  "name": "node-ratchet",
   "description": "A standalone (Node.js) client for Ratchet.io",
   "keywords": [
     "ratchetio",
@@ -10,7 +10,7 @@
     "python"
   ],
   "version": "0.0.2",
-  "repository": "git://github.com/coryvirok/node_ratchet.git",
+  "repository": "git://github.com/ratchetio/node_ratchet.git",
   "author": "Cory Virok <cory@ratchet.io>",
   "license": "",
   "main": "ratchet",
