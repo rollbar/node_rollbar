@@ -85,6 +85,8 @@ exports.init = function(accessToken, options) {
    *  
    */
   if (!initialized) {
+    options.environment = options.environment || process.env.NODE_ENV;
+
     api.init(accessToken, options);
     notifier.init(api, options);
     initialized = true;
