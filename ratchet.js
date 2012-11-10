@@ -85,6 +85,7 @@ exports.init = function(accessToken, options) {
    *  
    */
   if (!initialized) {
+    options = options || {};
     options.environment = options.environment || process.env.NODE_ENV;
 
     api.init(accessToken, options);
