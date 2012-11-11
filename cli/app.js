@@ -1,10 +1,8 @@
 var commander = require('commander');
-var ratchetio = require('ratchetio');
 var plugin = require('./plugin');
 var packageJson = require('../package.json');
 
 var config = {};
-ratchetio.init(config.access_token);
 
 commander.version(packageJson.version);
 
@@ -28,18 +26,32 @@ function hookupPlugins(mods) {
       }
       console.log(cmd);
     } catch (e) {
-      ratchetio.handleError(e);
+      console.error(e);
     }
   }
 }
 
-plugin.init(ratchetio, config, function(err, pluginModules) {
+function shutdownPlugins(mods) {
+  var i;
+  var curMod;
+
+  for (i = 0; i < mods.length; ++i) {
+    curMod = mods[i];
+    try {
+      curMod.shutdown();
+    } catch (e) {
+      console.error(e);
+    }
+  }
+}
+
+plugin.init(config, function(err, pluginModules) {
   if (err) {
     console.error('could not initialize plugins');
-    ratchetio.handleError(err);
     process.exit(1);
   } else {
     hookupPlugins(pluginModules);
     commander.parse(process.argv);
+    shutdownPlugins(pluginModules);
   }
 });
