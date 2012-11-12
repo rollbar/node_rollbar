@@ -5,6 +5,7 @@ var notifier = require('./lib/notifier');
 var parser = require('./lib/parser');
 
 var initialized = false;
+var shutdown = false;
 
 /**
  *
@@ -90,7 +91,7 @@ exports.init = function(accessToken, options) {
 
     api.init(accessToken, options);
     notifier.init(api, options);
-    initialized = true;
+    initialized = !!accessToken;
   }
 };
 
@@ -146,7 +147,14 @@ exports.handleError = notifier.handleError;
 
 
 exports.shutdown = function(callback) {
-  notifier.shutdown(callback);
+  if (!shutdown) {
+    notifier.shutdown(function(err) {
+      shutdown = true;
+      return callback(err);
+    });
+  } else {
+    return callback(null);
+  }
 };
 
 

@@ -26,6 +26,6 @@
   },
   "devDependencies": {
     "express": "*",
-    "commander": "1.0.x",
+    "commander": "1.0.x"
   }
 }
