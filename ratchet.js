@@ -160,15 +160,18 @@ exports.errorHandler = function(accessToken, options) {
    */
   exports.init(accessToken, options);
   return function(err, req, res, next) {
-    if (err) {
-      notifier.handleError(err, req, function(ratchetErr) {
-        if (ratchetErr) {
-          util.error('error reporting to ratchet, ignoring: %s', ratchetErr);
-        }
-        return next(err, req, res);
-      });
-    } else {
+    var cb = function(ratchetErr) {
+      if (ratchetErr) {
+        util.error('error reporting to ratchet, ignoring: %s', ratchetErr);
+      }
       return next(err, req, res);
+    };
+    if (!err) {
+      return next(err, req, res);
+    } else if (err instanceof Error) {
+      return notifier.handleError(err, req, cb);
+    } else {
+      return notifier.reportMessage('Error: ' + err, 'error', req, cb);
     }
   };
 };
