@@ -9,7 +9,7 @@
     "error",
     "python"
   ],
-  "version": "0.0.7",
+  "version": "0.0.8",
   "repository": "git://github.com/ratchetio/node_ratchet.git",
   "author": "Cory Virok <cory@ratchet.io>",
   "license": "",
@@ -22,6 +22,8 @@
     "node-uuid": "1.4.x"
   },
   "devDependencies": {
-    "express": "*"
+    "express": "*",
+    "jade": "~0.27.7",
+    "vows": "~0.7.0"
   }
 }

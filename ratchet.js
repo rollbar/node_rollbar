@@ -162,7 +162,7 @@ exports.errorHandler = function(accessToken, options) {
   return function(err, req, res, next) {
     var cb = function(ratchetErr) {
       if (ratchetErr) {
-        util.error('error reporting to ratchet, ignoring: %s', ratchetErr);
+        util.error('error reporting to ratchet, ignoring: ' + ratchetErr);
       }
       return next(err, req, res);
     };
