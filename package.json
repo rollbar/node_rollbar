@@ -14,7 +14,9 @@
   "author": "Cory Virok <cory@ratchet.io>",
   "license": "",
   "main": "ratchet",
-  "scripts": {},
+  "scripts": {
+    "test": "vows --spec test/*"
+  },
   "engines": {
     "node": ">= 0.6.0"
   },
