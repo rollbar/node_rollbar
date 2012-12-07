@@ -23,7 +23,7 @@ var suite = vows.describe('parser').addBatch({
   },
   'Create a new Error in this file': {
     topic: function() {
-      // NOTE: Don't change this next line of code since we verify the context_line
+      // NOTE: Don't change this next line of code since we verify the context line
       // in the parsed exception below.
       this.callback(null, new Error('Hello World'));
     },
@@ -40,10 +40,10 @@ var suite = vows.describe('parser').addBatch({
         assert.isObject(lastFrame);
         assert.equal(lastFrame.filename, __filename);
       },
-      'verify the context_line': function(err, parsedObj) {
+      'verify the context line': function(err, parsedObj) {
         var lastFrame = parsedObj.frames[parsedObj.frames.length - 1];
-        assert.isString(lastFrame.context_line);
-        assert.includes(lastFrame.context_line, 'new Error(\'Hello World\')');
+        assert.isString(lastFrame.code);
+        assert.includes(lastFrame.code, 'new Error(\'Hello World\')');
       }
     }
   }
