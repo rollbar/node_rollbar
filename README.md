@@ -1,4 +1,4 @@
-# ratchetio
+# ratchetio [![Build Status](https://secure.travis-ci.org/ratchetio/node_ratchet.png?branch=master)](https://travis-ci.org/ratchetio/node_ratchet)
 
 Generic library for reporting exceptions and other messages to [Ratchet.io](https://ratchet.io). Requires a Ratchet.io account.
 
