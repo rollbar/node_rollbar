@@ -85,6 +85,11 @@ exports.init = function(accessToken, options) {
    *  
    */
   if (!initialized) {
+    if (!accessToken) {
+      util.error('[Ratchetio] Missing access_token.');
+      return;
+    }
+
     options = options || {};
     options.environment = options.environment || process.env.NODE_ENV || 'development';
 
@@ -162,7 +167,7 @@ exports.errorHandler = function(accessToken, options) {
   return function(err, req, res, next) {
     var cb = function(ratchetErr) {
       if (ratchetErr) {
-        util.error('error reporting to ratchet, ignoring: ' + ratchetErr);
+        util.error('[Ratchetio] Error reporting to ratchet, ignoring: ' + ratchetErr);
       }
       return next(err, req, res);
     };
@@ -188,14 +193,19 @@ exports.handleUncaughtExceptions = function(accessToken, options) {
    *
    */
   exports.init(accessToken, options);
-  process.on('uncaughtException', function(err) {
-    notifier.changeHandler('inline');
-    notifier.handleError(err, function(err) {
-      exports.shutdown(function(e) {
-        process.exit(1);
+
+  if (initialized) {
+    process.on('uncaughtException', function(err) {
+      notifier.changeHandler('inline');
+      notifier.handleError(err, function(err) {
+        exports.shutdown(function(e) {
+          process.exit(1);
+        });
       });
     });
-  });
+  } else {
+    util.error('[Ratchetio] Ratchet is not initialized. Uncaught exceptions will not be tracked.');
+  }
 };
 
 
