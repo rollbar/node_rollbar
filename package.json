@@ -21,7 +21,8 @@
     "node": ">= 0.6.0"
   },
   "dependencies": {
-    "node-uuid": "1.4.x"
+    "node-uuid": "1.4.x",
+    "lru-cache": "~2.2.1"
   },
   "devDependencies": {
     "express": "*",

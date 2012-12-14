@@ -86,7 +86,7 @@ exports.init = function(accessToken, options) {
    */
   if (!initialized) {
     if (!accessToken) {
-      util.error('[Ratchetio] Missing access_token.');
+      util.error('[Ratchet.io] Missing access_token.');
       return;
     }
 
@@ -167,7 +167,7 @@ exports.errorHandler = function(accessToken, options) {
   return function(err, req, res, next) {
     var cb = function(ratchetErr) {
       if (ratchetErr) {
-        util.error('[Ratchetio] Error reporting to ratchet, ignoring: ' + ratchetErr);
+        util.error('[Ratchet.io] Error reporting to ratchet, ignoring: ' + ratchetErr);
       }
       return next(err, req, res);
     };
@@ -204,7 +204,7 @@ exports.handleUncaughtExceptions = function(accessToken, options) {
       });
     });
   } else {
-    util.error('[Ratchetio] Ratchet is not initialized. Uncaught exceptions will not be tracked.');
+    util.error('[Ratchet.io] Ratchet is not initialized. Uncaught exceptions will not be tracked.');
   }
 };
 
