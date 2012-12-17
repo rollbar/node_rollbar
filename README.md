@@ -80,6 +80,7 @@ ratchet.shutdown();
     Supported values:
 
     - setInterval -- all items that are queued up are sent to ratchet.io in batches in a setInterval callback
+      - NOTE: using this mode will mean that items are queued internally before being sent. For applications that send a very large amount of items, it is possible to use up too much memory and crash the node process. If this starts to happen, try lowering the handlerInterval setting or switch to a different handler, e.g. 'nextTick'.
     - nextTick -- all items that are queued up are sent to ratchet.io in a process.nextTick callback
     - inline -- items are sent to ratchet.io as they are queued up, one at-a-time
 
