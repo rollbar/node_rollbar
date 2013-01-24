@@ -108,7 +108,7 @@ ratchet.shutdown();
 
 - **scrubFields**: List of field names to scrub out of POST. Values will be replaced with astrickses. If overriding, make sure to list all fields you want to scrub, not just fields you want to add to the default. Param names are converted to lowercase before comparing against the scrub list.
 
-    _default:_ `['passwd', 'password', 'secret']`
+    _default:_ `['passwd', 'password', 'secret', 'confirm_password', 'password_confirmation']`
 
 
 ## Contributing
