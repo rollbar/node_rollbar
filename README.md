@@ -1,14 +1,14 @@
-# ratchetio [![Build Status](https://secure.travis-ci.org/ratchetio/node_ratchet.png?branch=master)](https://travis-ci.org/ratchetio/node_ratchet)
+# rollbar [![Build Status](https://secure.travis-ci.org/rollbar/node_rollbar.png?branch=master)](https://travis-ci.org/rollbar/node_rollbar)
 
-Generic library for reporting exceptions and other messages to [Ratchet.io](https://ratchet.io). Requires a Ratchet.io account.
+Generic library for reporting exceptions and other messages to [Rollbar](https://rollbar.com). Requires a Rollbar account.
 
 ```js
-// include and initialize the ratchet library with your access token
-var ratchet = require("ratchetio");
-ratchet.init("ACCESS_TOKEN");
+// include and initialize the rollbar library with your access token
+var rollbar = require("rollbar");
+rollbar.init("ACCESS_TOKEN");
 
-// record a generic message and send to ratchet.io
-ratchet.reportMessage("Hello world!");
+// record a generic message and send to rollbar
+rollbar.reportMessage("Hello world!");
 ```
 
 
@@ -16,7 +16,7 @@ ratchet.reportMessage("Hello world!");
 
 Install using the node package manager, npm:
 
-    $ npm install --save ratchetio
+    $ npm install --save rollbar
 
 
 ## Configuration
@@ -25,7 +25,7 @@ Install using the node package manager, npm:
 
 ```js
 var express = require('express');
-var ratchet = require('ratchetio');
+var rollbar = require('rollbar');
 
 var app = express();
 
@@ -33,8 +33,8 @@ app.get('/', function(req, res) {
   // ...
 });
 
-// Use the ratchet error handler to send exceptions to your ratchet.io account
-app.use(ratchet.errorHandler('RATCHET_ACCESS_TOKEN'));
+// Use the rollbar error handler to send exceptions to your rollbar account
+app.use(rollbar.errorHandler('ROLLBAR_ACCESS_TOKEN'));
 
 app.listen(6943);
 ```
@@ -45,27 +45,27 @@ app.listen(6943);
 In your main application, require and initialize using your access_token::
 
 ```js
-var ratchet = require("ratchetio");
-ratchet.init("ACCESS_TOKEN");
+var rollbar = require("rollbar");
+rollbar.init("ACCESS_TOKEN");
 ```
     
 Other options can be passed into the init() function using a second parameter. E.g.:
 
 ```js
-// Queue up and report messages/exceptions to ratchet every 5 seconds
-ratchet.init("ACCESS_TOKEN", {handler: "setInterval", handlerInterval: 5});
+// Queue up and report messages/exceptions to rollbar every 5 seconds
+rollbar.init("ACCESS_TOKEN", {handler: "setInterval", handlerInterval: 5});
 ```
 
-When you are finished using ratchet, clean up any remaining items in the queue using the shutdown function:
+When you are finished using rollbar, clean up any remaining items in the queue using the shutdown function:
 
 ```js
-ratchet.shutdown();
+rollbar.shutdown();
 ```
 
 
 ### Configuration reference
 
-`ratchet.init()` takes the following configuration options (pass in the second parameter):
+`rollbar.init()` takes the following configuration options (pass in the second parameter):
 
 - **host**: The hostname of the server the node.js process is running on
     
@@ -79,26 +79,26 @@ ratchet.shutdown();
 
     Supported values:
 
-    - setInterval -- all items that are queued up are sent to ratchet.io in batches in a setInterval callback
+    - setInterval -- all items that are queued up are sent to rollbar in batches in a setInterval callback
       - NOTE: using this mode will mean that items are queued internally before being sent. For applications that send a very large amount of items, it is possible to use up too much memory and crash the node process. If this starts to happen, try lowering the handlerInterval setting or switch to a different handler, e.g. 'nextTick'.
-    - nextTick -- all items that are queued up are sent to ratchet.io in a process.nextTick callback
-    - inline -- items are sent to ratchet.io as they are queued up, one at-a-time
+    - nextTick -- all items that are queued up are sent to rollbar in a process.nextTick callback
+    - inline -- items are sent to rollbar as they are queued up, one at-a-time
 
     _default:_ `setInterval`
 
-- **handlerInterval**: If the handler is `setInterval`, this is the number of seconds between batch posts of items to ratchet.io.
+- **handlerInterval**: If the handler is `setInterval`, this is the number of seconds between batch posts of items to rollbar.
 
     _default:_ `3`
 
-- **batchSize**: The max number of items sent to ratchet.io at a time.
+- **batchSize**: The max number of items sent to rollbar at a time.
 
     _default:_ `10`
 
-- **endpoint**: The Ratchet.io API base url.
+- **endpoint**: The rollbar API base url.
 
-    _default:_ `https://submit.ratchet.io/api/1/`
+    _default:_ `https://api.rollbar.com/api/1/`
 
-- **root**: The path to your code, (not including any trailing slash) which will be used to link source files on ratchet.io.
+- **root**: The path to your code, (not including any trailing slash) which will be used to link source files on rollbar.
 
     e.g. `/Users/bob/Development`
 
@@ -113,7 +113,7 @@ ratchet.shutdown();
 
 ## Contributing
 
-Contributions are welcome. The project is hosted on github at http://github.com/ratchetio/node_ratchet
+Contributions are welcome. The project is hosted on github at http://github.com/rollbar/node_rollbar
 
 
 ## Examples
@@ -122,5 +122,5 @@ See the examples directory for more uses.
 
 
 ## Additional Help
-If you have any questions, feedback, etc., drop us a line at support@ratchet.io
+If you have any questions, feedback, etc., drop us a line at support@rollbar.com
 

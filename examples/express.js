@@ -1,5 +1,5 @@
 var express = require('express');
-var ratchet = require('../ratchet');
+var rollbar = require('../rollbar');
 
 var app = express();
 
@@ -8,8 +8,8 @@ app.get('/', function(req, res) {
   throw new Error('Hello World');
 });
 
-app.use(ratchet.errorHandler("ACCESS_TOKEN",
+app.use(rollbar.errorHandler("ACCESS_TOKEN",
                              {environment: 'playground'}));
 
-console.log('browse to http://localhost:9876/ then go to your ratchet.io account: http://ratchet.io/');
+console.log('browse to http://localhost:9876/ then go to your rollbar account: http://rollbar.com/');
 app.listen(9876);

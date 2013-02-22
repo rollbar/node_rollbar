@@ -1,19 +1,20 @@
 {
-  "name": "ratchetio",
-  "description": "A standalone (Node.js) client for Ratchet.io",
+  "name": "rollbar",
+  "description": "A standalone (Node.js) client for Rollbar",
   "keywords": [
     "ratchetio",
     "ratchet",
+    "rollbar",
     "exception",
     "uncaughtException",
     "error",
     "python"
   ],
-  "version": "0.1.4",
-  "repository": "git://github.com/ratchetio/node_ratchet.git",
-  "author": "Cory Virok <cory@ratchet.io>",
+  "version": "0.2.0",
+  "repository": "git://github.com/rollbar/node_rollbar.git",
+  "author": "Cory Virok <cory@rollbar.com>",
   "license": "",
-  "main": "ratchet",
+  "main": "rollbar",
   "scripts": {
     "test": "vows --spec test/*"
   },

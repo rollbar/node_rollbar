@@ -1,8 +1,8 @@
-var ratchet = require('../ratchet');
+var rollbar = require('../rollbar');
 
 var accessToken = "ACCESS_TOKEN";
-ratchet.init(accessToken, {environment: 'playground'});
-ratchet.handleUncaughtExceptions();
+rollbar.init(accessToken, {environment: 'playground'});
+rollbar.handleUncaughtExceptions();
 
 function foo() {
   return bar();
