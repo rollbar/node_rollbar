@@ -1,19 +1,19 @@
 {
   "name": "rollbar",
   "description": "A standalone (Node.js) client for Rollbar",
+  "homepage": "http://rollbar.com/docs/items_node/",
   "keywords": [
-    "ratchetio",
-    "ratchet",
     "rollbar",
     "exception",
     "uncaughtException",
     "error",
-    "python"
+    "ratchetio",
+    "ratchet"
   ],
   "version": "0.2.0",
   "repository": "git://github.com/rollbar/node_rollbar.git",
   "author": "Cory Virok <cory@rollbar.com>",
-  "license": "",
+  "license": "MIT",
   "main": "rollbar",
   "scripts": {
     "test": "vows --spec test/*"
