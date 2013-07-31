@@ -45,5 +45,15 @@ var suite = vows.describe('notifier').addBatch({
     'verify an error is returned': function(err) {
       assert.isNotNull(err);
     }
+  },
+  'reportMessageWithPayloadData with valid level and fingerprint': {
+    topic: function() {
+      notifier.reportMessageWithPayloadData('test', {level: 'debug', fingerprint: 'custom-fingerprint'}, null, this.callback);
+    },
+    'verify no error is returned': function(err, resp) {
+      assert.isNull(err);
+      assert.isObject(resp);
+      assert.include(resp, 'ids');
+    }
   }
 }).export(module, {error: false});
