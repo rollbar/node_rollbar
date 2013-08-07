@@ -1,11 +1,15 @@
-# rollbar [![Build Status](https://secure.travis-ci.org/rollbar/node_rollbar.png?branch=master)](https://travis-ci.org/rollbar/node_rollbar)
+# Rollbar notifier for Node.js [![Build Status](https://secure.travis-ci.org/rollbar/node_rollbar.png?branch=master)](https://travis-ci.org/rollbar/node_rollbar)
 
 Generic library for reporting exceptions and other messages to [Rollbar](https://rollbar.com). Requires a Rollbar account.
+
+<!-- Sub:[TOC] -->
+
+##Quick start
 
 ```js
 // include and initialize the rollbar library with your access token
 var rollbar = require("rollbar");
-rollbar.init("ACCESS_TOKEN");
+rollbar.init("POST_SERVER_ITEM_ACCESS_TOKEN");
 
 // record a generic message and send to rollbar
 rollbar.reportMessage("Hello world!");
@@ -34,7 +38,7 @@ app.get('/', function(req, res) {
 });
 
 // Use the rollbar error handler to send exceptions to your rollbar account
-app.use(rollbar.errorHandler('ROLLBAR_ACCESS_TOKEN'));
+app.use(rollbar.errorHandler('POST_SERVER_ITEM_ACCESS_TOKEN'));
 
 app.listen(6943);
 ```
@@ -46,14 +50,14 @@ In your main application, require and initialize using your access_token::
 
 ```js
 var rollbar = require("rollbar");
-rollbar.init("ACCESS_TOKEN");
+rollbar.init("POST_SERVER_ITEM_ACCESS_TOKEN");
 ```
     
 Other options can be passed into the init() function using a second parameter. E.g.:
 
 ```js
 // Queue up and report messages/exceptions to rollbar every 5 seconds
-rollbar.init("ACCESS_TOKEN", {handler: "setInterval", handlerInterval: 5});
+rollbar.init("POST_SERVER_ITEM_ACCESS_TOKEN", {handler: "setInterval", handlerInterval: 5});
 ```
 
 When you are finished using rollbar, clean up any remaining items in the queue using the shutdown function:
@@ -67,49 +71,66 @@ rollbar.shutdown();
 
 `rollbar.init()` takes the following configuration options (pass in the second parameter):
 
-- **host**: The hostname of the server the node.js process is running on
-    
-    _default:_ `os.hostname()`
+  <dl>
+  <dt>host</dt>
+  <dd>The hostname of the server the node.js process is running on.
 
-- **environment**: The environment the code is running in.
+Default: `os.hostname()`
+  </dd>
+  
+  <dt>environment</dt>
+  <dd>The environment the code is running in.
 
-    _default:_ `production`
+Default: `'production'`
+  </dd>
+  
+  <dt>handler</dt>
+  <dd>The method that the notifier will use to report exceptions.
+  Supported values:
 
-- **handler**: The method that the notifier will use to report exceptions.
+- setInterval -- all items that are queued up are sent to rollbar in batches in a setInterval callback
+  - NOTE: using this mode will mean that items are queued internally before being sent. For applications that send a very large amount of items, it is possible to use up too much memory and crash the node process. If this starts to happen, try lowering the handlerInterval setting or switch to a different handler, e.g. 'nextTick'.
+- nextTick -- all items that are queued up are sent to rollbar in a process.nextTick callback
+- inline -- items are sent to rollbar as they are queued up, one at-a-time
 
-    Supported values:
+Default: `setInterval`
+  </dd>
+  
+  <dt>handlerInterval</dt>
+  <dd>If the handler is `setInterval`, this is the number of seconds between batch posts of items to rollbar.
 
-    - setInterval -- all items that are queued up are sent to rollbar in batches in a setInterval callback
-      - NOTE: using this mode will mean that items are queued internally before being sent. For applications that send a very large amount of items, it is possible to use up too much memory and crash the node process. If this starts to happen, try lowering the handlerInterval setting or switch to a different handler, e.g. 'nextTick'.
-    - nextTick -- all items that are queued up are sent to rollbar in a process.nextTick callback
-    - inline -- items are sent to rollbar as they are queued up, one at-a-time
+Default: `3`
+  </dd>
+  
+  <dt>batchSize</dt>
+  <dd>The max number of items sent to rollbar at a time.
 
-    _default:_ `setInterval`
+Default: `10`
+  </dd>
+  
+  <dt>endpoint</dt>
+  <dd>The rollbar API base url.
 
-- **handlerInterval**: If the handler is `setInterval`, this is the number of seconds between batch posts of items to rollbar.
+Default: `'https://api.rollbar.com/api/1/'`
+  </dd>
+  
+  <dt>root</dt>
+  <dd>The path to your code, (not including any trailing slash) which will be used to link source files on Rollbar.
 
-    _default:_ `3`
+e.g. `'/Users/bob/Development'`
+  </dd>
+  
+  <dt>branch</dt>
+  <dd>The branch in your version control system for this code.
 
-- **batchSize**: The max number of items sent to rollbar at a time.
+e.g. `'master'`
+  </dd>
+  
+  <dt>scrubFields</dt>
+  <dd>List of field names to scrub out of POST. Values will be replaced with astrickses. If overriding, make sure to list all fields you want to scrub, not just fields you want to add to the default. Param names are converted to lowercase before comparing against the scrub list.
 
-    _default:_ `10`
-
-- **endpoint**: The rollbar API base url.
-
-    _default:_ `https://api.rollbar.com/api/1/`
-
-- **root**: The path to your code, (not including any trailing slash) which will be used to link source files on rollbar.
-
-    e.g. `/Users/bob/Development`
-
-- **branch**: The branch in your version control system for this code
-
-    e.g. `master`
-
-- **scrubFields**: List of field names to scrub out of POST. Values will be replaced with astrickses. If overriding, make sure to list all fields you want to scrub, not just fields you want to add to the default. Param names are converted to lowercase before comparing against the scrub list.
-
-    _default:_ `['passwd', 'password', 'secret', 'confirm_password', 'password_confirmation']`
-
+Default: `['passwd', 'password', 'secret', 'confirm_password', 'password_confirmation']`
+  </dd>
 
 ## Contributing
 
