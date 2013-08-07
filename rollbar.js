@@ -125,6 +125,30 @@ exports.init = function(accessToken, options) {
  */
 exports.reportMessage = notifier.reportMessage;
 
+
+/*
+ * reportMessageWithPayloadData(message, payloadData, request, callback)
+ *
+ * The same as reportMessage() but allows you to specify extra data along with the message.
+ *
+ * Parameters:
+ *  message - a string to send to rollbar
+ *  payloadData - an object containing key/values to be sent along with the message.
+ *    e.g. {level: "warning", fingerprint: "CustomerFingerPrint"}
+ *  request - optional request object to send along with the message
+ *  callback - optional callback that will be invoked depending on the handler method used.
+ *    Should take a single parameter to denote if there was an error.
+ *
+ * Examples:
+ *
+ *  rollbar.reportMessageWithPayloadData("Memcache miss",
+ *    {level: "debug", fingerprint: "Memcache-miss"}, null, function(err) {
+ *    // message was queued/sent to rollbar
+ *  });
+ *
+ */
+exports.reportMessageWithPayloadData = notifier.reportMessageWithPayloadData;
+
 /*
  * handleError(err, request, callback)
  *
