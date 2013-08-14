@@ -55,5 +55,43 @@ var suite = vows.describe('notifier').addBatch({
       assert.isObject(resp);
       assert.include(resp, 'ids');
     }
+  },
+  'scrubRequestHeaders scrubs "cookie" header': {
+    topic: function() {
+      var callback = this.callback;
+
+      notifier.init('XXXXX', {scrubHeaders: ['cookie']});
+      return callback(null, notifier._scrubRequestHeaders({cookie: 'remove=me', otherHeader: 'test'}));
+    },
+    'verify cookie is scrubbed': function(err, headers) {
+      assert.equal(headers.cookie, '*********');
+      assert.equal(headers.otherHeader, 'test');
+    }
+  },
+  'scrubRequestHeaders scrubs multiple headers': {
+    topic: function() {
+      var callback = this.callback;
+
+      notifier.init('XXXXX', {scrubHeaders: ['cookie', 'password']});
+      return callback(null, notifier._scrubRequestHeaders({cookie: 'remove=me', password: 'secret', otherHeader: 'test'}));
+    },
+    'verify all scrub fields are scrubbed': function(err, headers) {
+      assert.equal(headers.cookie, '*********');
+      assert.equal(headers.password, '******');
+      assert.equal(headers.otherHeader, 'test');
+    }
+  },
+  'scrubRequestParams scrubs "password" and "confirm_password" fields by default': {
+    topic: function() {
+      var callback = this.callback;
+
+      notifier.init('XXXXX');
+      return callback(null, notifier._scrubRequestParams({password: 'secret', confirm_password: 'secret', otherParam: 'test'}));
+    },
+    'verify fields are scrubbed': function(err, params) {
+      assert.equal(params.password, '******');
+      assert.equal(params.confirm_password, '******');
+      assert.equal(params.otherParam, 'test');
+    }
   }
 }).export(module, {error: false});
