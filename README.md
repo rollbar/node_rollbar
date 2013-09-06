@@ -126,6 +126,12 @@ e.g. `'/Users/bob/Development'`
 e.g. `'master'`
   </dd>
   
+  <dt>codeVersion</dt>
+  <dd>The version or revision of your code.
+
+e.g. `'868ff435d6a480929103452e5ebe8671c5c89f77'`
+  </dd>
+  
   <dt>scrubFields</dt>
   <dd>List of field names to scrub out of POST. Values will be replaced with astrickses. If overriding, make sure to list all fields you want to scrub, not just fields you want to add to the default. Param names are converted to lowercase before comparing against the scrub list.
 

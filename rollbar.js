@@ -82,6 +82,7 @@ exports.init = function(accessToken, options) {
    *  endpoint - Default: 'https://api.rollbar.com/api/1/' - the url to send items to
    *  root - the path to your code, (not including any trailing slash) which will be used to link source files on rollbar
    *  branch - the branch in your version control system for this code
+   *  codeVersion - the version or revision of your code
    *  
    */
   if (!initialized) {
