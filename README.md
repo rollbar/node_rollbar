@@ -1,5 +1,6 @@
 # Rollbar notifier for Node.js [![Build Status](https://secure.travis-ci.org/rollbar/node_rollbar.png?branch=master)](https://travis-ci.org/rollbar/node_rollbar)
 
+<!-- RemoveNext -->
 Generic library for reporting exceptions and other messages to [Rollbar](https://rollbar.com). Requires a Rollbar account.
 
 <!-- Sub:[TOC] -->
@@ -15,6 +16,8 @@ rollbar.init("POST_SERVER_ITEM_ACCESS_TOKEN");
 rollbar.reportMessage("Hello world!");
 ```
 
+<!-- RemoveNextIfProject -->
+Be sure to replace ```POST_SERVER_ITEM_ACCESS_TOKEN``` with your project's ```post_server_item``` access token, which you can find in the Rollbar.com interface.
 
 ## Installation
 
