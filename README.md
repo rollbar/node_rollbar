@@ -98,7 +98,7 @@ Default: `os.hostname()`
   <dt>environment</dt>
   <dd>The environment the code is running in.
 
-Default: `'production'`
+Default: `'unspecified'`
   </dd>
   
   <dt>handler</dt>
