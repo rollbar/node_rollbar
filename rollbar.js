@@ -92,7 +92,7 @@ exports.init = function(accessToken, options) {
     }
 
     options = options || {};
-    options.environment = options.environment || process.env.NODE_ENV || 'development';
+    options.environment = options.environment || process.env.NODE_ENV || 'production';
 
     api.init(accessToken, options);
     notifier.init(api, options);
@@ -213,18 +213,28 @@ exports.handleUncaughtExceptions = function(accessToken, options) {
    * will immediately send the uncaught exception + all queued items to rollbar
    * and then shut down the rollbar library via rollbar.shutdown().
    *
+   * If options.exitOnUncaught is set, the notifier will optionally call process.exit(1)
+   * once the rollbar items are processed.
+   *
    * Note: The node.js authors advise against using these type of handlers.
    * More info: http://nodejs.org/api/process.html#process_event_uncaughtexception
    *
    */
+
+  // Default to exiting on uncaught exceptions unless options.exitOnUncaughtException is set
+  var exitOnUncaught = options.exitOnUncaughtException === undefined ? false : !!options.exitOnUncaughtException;
+  delete options.exitOnUncaughtException;
+
   exports.init(accessToken, options);
 
   if (initialized) {
-    process.on('uncaughtException', function(err) {
+    process.once('uncaughtException', function(err) {
       notifier.changeHandler('inline');
       notifier.handleError(err, function(err) {
         exports.shutdown(function(e) {
-          process.exit(1);
+          if (exitOnUncaught) {
+            process.exit(1);
+          }
         });
       });
     });
