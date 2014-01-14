@@ -59,9 +59,7 @@ var suite = vows.describe('notifier').addBatch({
   'scrubRequestHeaders scrubs "cookie" header': {
     topic: function() {
       var callback = this.callback;
-
-      notifier.init('XXXXX', {scrubHeaders: ['cookie']});
-      return callback(null, notifier._scrubRequestHeaders({cookie: 'remove=me', otherHeader: 'test'}));
+      return callback(null, notifier._scrubRequestHeaders(['cookie'], {cookie: 'remove=me', otherHeader: 'test'}));
     },
     'verify cookie is scrubbed': function(err, headers) {
       assert.equal(headers.cookie, '*********');
@@ -71,9 +69,11 @@ var suite = vows.describe('notifier').addBatch({
   'scrubRequestHeaders scrubs multiple headers': {
     topic: function() {
       var callback = this.callback;
-
-      notifier.init('XXXXX', {scrubHeaders: ['cookie', 'password']});
-      return callback(null, notifier._scrubRequestHeaders({cookie: 'remove=me', password: 'secret', otherHeader: 'test'}));
+      return callback(null,
+          notifier._scrubRequestHeaders(['cookie', 'password'],
+            {cookie: 'remove=me',
+             password: 'secret',
+             otherHeader: 'test'}));
     },
     'verify all scrub fields are scrubbed': function(err, headers) {
       assert.equal(headers.cookie, '*********');
@@ -84,9 +84,11 @@ var suite = vows.describe('notifier').addBatch({
   'scrubRequestParams scrubs "password" and "confirm_password" fields by default': {
     topic: function() {
       var callback = this.callback;
-
-      notifier.init('XXXXX');
-      return callback(null, notifier._scrubRequestParams({password: 'secret', confirm_password: 'secret', otherParam: 'test'}));
+      return callback(null,
+          notifier._scrubRequestParams(undefined, 
+            {password: 'secret',
+             confirm_password: 'secret',
+             otherParam: 'test'}));
     },
     'verify fields are scrubbed': function(err, params) {
       assert.equal(params.password, '******');
