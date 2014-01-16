@@ -71,7 +71,7 @@ exports.init = function(accessToken, options) {
    * Supported options, (all optional):
    *
    *  host - Default: os.hostname() - the hostname of the server the node.js process is running on
-   *  environment - Default: 'production' - the environment the code is running in. e.g. 'staging'
+   *  environment - Default: 'unspecified' - the environment the code is running in. e.g. 'staging'
    *  handler - Default: 'setInterval' - the method that the notifier will use to report exceptions,
    *    choices:
    *      setInterval: all items that are queued up are sent to rollbar in batches in a setInterval callback
@@ -92,7 +92,7 @@ exports.init = function(accessToken, options) {
     }
 
     options = options || {};
-    options.environment = options.environment || process.env.NODE_ENV || 'production';
+    options.environment = options.environment || process.env.NODE_ENV || 'unspecified';
 
     api.init(accessToken, options);
     notifier.init(api, options);

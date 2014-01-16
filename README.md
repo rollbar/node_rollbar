@@ -70,6 +70,20 @@ rollbar.shutdown();
 ```
 
 
+### Uncaught exceptions
+
+```js
+var options = {
+  // Call process.exit(1) when an uncaught exception occurs but after reporting all
+  // pending errors to Rollbar.
+  //
+  // Default: true
+  exitOnUncaughtException: true
+};
+rollbar.handleUncaughtExceptions("POST_SERVER_ITEM_ACCESS_TOKEN", options);
+```
+
+
 ### Configuration reference
 
 `rollbar.init()` takes the following configuration options (pass in the second parameter):
@@ -84,7 +98,7 @@ Default: `os.hostname()`
   <dt>environment</dt>
   <dd>The environment the code is running in.
 
-Default: `'production'`
+Default: `'unspecified'`
   </dd>
   
   <dt>handler</dt>
@@ -140,6 +154,7 @@ e.g. `'868ff435d6a480929103452e5ebe8671c5c89f77'`
 
 Default: `['passwd', 'password', 'secret', 'confirm_password', 'password_confirmation']`
   </dd>
+  </dl>
 
 ## Contributing
 
