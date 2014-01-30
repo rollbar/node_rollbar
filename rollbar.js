@@ -222,6 +222,7 @@ exports.handleUncaughtExceptions = function(accessToken, options) {
    */
 
   // Default to exiting on uncaught exceptions unless options.exitOnUncaughtException is set
+  options = options || {};
   var exitOnUncaught = options.exitOnUncaughtException === undefined ? false : !!options.exitOnUncaughtException;
   delete options.exitOnUncaughtException;
 
