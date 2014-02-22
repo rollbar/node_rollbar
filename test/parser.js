@@ -1,7 +1,6 @@
 var assert = require('assert');
 var fs = require('fs');
 var jade = require('jade');
-var util = require('util');
 var vows = require('vows');
 
 var parser = require('../lib/parser');

@@ -1,5 +1,3 @@
-var util = require('util');
-
 var api = require('./lib/api');
 var notifier = require('./lib/notifier');
 var parser = require('./lib/parser');
@@ -87,7 +85,7 @@ exports.init = function(accessToken, options) {
    */
   if (!initialized) {
     if (!accessToken) {
-      util.error('[Rollbar] Missing access_token.');
+      console.error('[Rollbar] Missing access_token.');
       return;
     }
 
@@ -192,7 +190,7 @@ exports.errorHandler = function(accessToken, options) {
   return function(err, req, res, next) {
     var cb = function(rollbarErr) {
       if (rollbarErr) {
-        util.error('[Rollbar] Error reporting to rollbar, ignoring: ' + rollbarErr);
+        console.error('[Rollbar] Error reporting to rollbar, ignoring: ' + rollbarErr);
       }
       return next(err, req, res);
     };
@@ -240,7 +238,7 @@ exports.handleUncaughtExceptions = function(accessToken, options) {
       });
     });
   } else {
-    util.error('[Rollbar] Rollbar is not initialized. Uncaught exceptions will not be tracked.');
+    console.error('[Rollbar] Rollbar is not initialized. Uncaught exceptions will not be tracked.');
   }
 };
 
