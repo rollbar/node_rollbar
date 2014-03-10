@@ -23,7 +23,8 @@
   },
   "dependencies": {
     "node-uuid": "1.4.x",
-    "lru-cache": "~2.2.1"
+    "lru-cache": "~2.2.1",
+    "json-stringify-safe": "~5.0.0"
   },
   "devDependencies": {
     "express": "*",
