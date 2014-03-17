@@ -1,5 +1,12 @@
 # Change Log
 
+**0.3.2**
+- Added `json-stringify-safe` to handle circular object references properly in payload construction
+- Use `console.error` instead of `util.error` due to deprecation
+
+**0.3.1**
+- Don't require options to be passed into `handleUncaughtExceptions`
+
 **0.3.0**
 - Change default environment to 'unspecified' instead of 'production'
 
