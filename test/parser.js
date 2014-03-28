@@ -58,6 +58,18 @@ var suite = vows.describe('parser').addBatch({
       assert.equal(parsedObj.frames[0].lineno, 1);
       assert.equal(parsedObj.frames[0].colno, 2);
     }
+  },
+  'A coffee script stacktrace': {
+    topic: function(err) {
+      var exc = new Error();
+      exc.stack = "TypeError: Cannot read property 'foo' of undefined\n at example (/tmp/example.coffee:2:3, <js>:5:20)";
+      return parser.parseException(exc, this.callback);
+    },
+    'it parses correctly': function(err, parsedObj) {
+      assert.equal(parsedObj.frames[0].filename, "/tmp/example.coffee");
+      assert.equal(parsedObj.frames[0].lineno, 2);
+      assert.equal(parsedObj.frames[0].colno, 3);
+    }
   }
 }).export(module, {error: false});
 
