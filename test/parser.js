@@ -45,6 +45,19 @@ var suite = vows.describe('parser').addBatch({
         assert.includes(lastFrame.code, 'new Error(\'Hello World\')');
       }
     }
+  },
+  'An error reading a file': {
+    topic: function(err) {
+      var exc = new Error();
+      exc.stack = "Error\n at REPLServer.self.eval (/tmp/file-does-not-exist.js:1:2)";
+      return parser.parseException(exc, this.callback);
+    },
+    'it returns frames without context': function(err, parsedObj) {
+      assert.equal(parsedObj.frames.length, 1);
+      assert.equal(parsedObj.frames[0].filename, "/tmp/file-does-not-exist.js");
+      assert.equal(parsedObj.frames[0].lineno, 1);
+      assert.equal(parsedObj.frames[0].colno, 2);
+    }
   }
 }).export(module, {error: false});
 
