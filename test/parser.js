@@ -49,14 +49,18 @@ var suite = vows.describe('parser').addBatch({
   'An error reading a file': {
     topic: function(err) {
       var exc = new Error();
-      exc.stack = "Error\n at REPLServer.self.eval (/tmp/file-does-not-exist.js:1:2)";
+      exc.stack = "Error\n at REPLServer.self.eval (/tmp/file-does-not-exist.js:1:2)" +
+        "\n at REPLServer.self.eval (/tmp/other-file-does-not-exist.js:3:4)";
       return parser.parseException(exc, this.callback);
     },
     'it returns frames without context': function(err, parsedObj) {
-      assert.equal(parsedObj.frames.length, 1);
-      assert.equal(parsedObj.frames[0].filename, "/tmp/file-does-not-exist.js");
-      assert.equal(parsedObj.frames[0].lineno, 1);
-      assert.equal(parsedObj.frames[0].colno, 2);
+      assert.equal(parsedObj.frames.length, 2);
+      assert.equal(parsedObj.frames[0].filename, "/tmp/other-file-does-not-exist.js");
+      assert.equal(parsedObj.frames[0].lineno, 3);
+      assert.equal(parsedObj.frames[0].colno, 4);
+      assert.equal(parsedObj.frames[1].filename, "/tmp/file-does-not-exist.js");
+      assert.equal(parsedObj.frames[1].lineno, 1);
+      assert.equal(parsedObj.frames[1].colno, 2);
     }
   }
 }).export(module, {error: false});
