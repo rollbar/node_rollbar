@@ -1,5 +1,8 @@
 # Change Log
 
+**0.3.3 (unreleased)**
+- Fix bug that caused error reports to be swallowed when the stacktrace contains files that cannot be read [#22](https://github.com/rollbar/node_rollbar/pull/22)
+
 **0.3.2**
 - Added `json-stringify-safe` to handle circular object references properly in payload construction
 - Use `console.error` instead of `util.error` due to deprecation
