@@ -73,6 +73,8 @@ var suite = vows.describe('parser').addBatch({
       assert.equal(parsedObj.frames[0].filename, "/tmp/example.coffee");
       assert.equal(parsedObj.frames[0].lineno, 2);
       assert.equal(parsedObj.frames[0].colno, 3);
+      assert.equal(parsedObj.frames[0].compiled_lineno, 5);
+      assert.equal(parsedObj.frames[0].compiled_colno, 20);
     }
   }
 }).export(module, {error: false});
