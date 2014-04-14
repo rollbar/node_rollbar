@@ -1,5 +1,8 @@
 # Change Log
 
+**0.3.4**
+- Fix bug that was not properly serializing JSON when there were multiple references to the same object in the payload.
+
 **0.3.3**
 - Fix bug that caused error reports to be swallowed when the stacktrace contains files that cannot be read ([#22](https://github.com/rollbar/node_rollbar/pull/22))
 - Parse CoffeeScript stack traces ([#23](https://github.com/rollbar/node_rollbar/pull/23))
