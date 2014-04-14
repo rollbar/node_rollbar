@@ -22,5 +22,18 @@ var suite = vows.describe('json').addBatch({
       assert.isObject(resp);
       assert.include(resp, 'ids');
     }
+  },
+  'should handle sibling keys that refer to the same object': {
+    topic: function() {
+      var obj = {foo: 'bar'};
+      var testObj = {a: obj, b: obj};
+
+      notifier.reportMessageWithPayloadData('test', testObj, null, this.callback);
+    },
+    'verify there were no errors reporting the object': function(err, resp) {
+      assert.isNull(err);
+      assert.isObject(resp);
+      assert.include(resp, 'ids');
+    }
   }
 }).export(module, {error: false});
