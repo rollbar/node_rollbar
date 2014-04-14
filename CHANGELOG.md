@@ -1,5 +1,8 @@
 # Change Log
 
+**0.3.5**
+- Handles a situation where circular references could likely exist which may result in no payload being sent at all.
+
 **0.3.4**
 - Fix bug that was not properly serializing JSON when there were multiple references to the same object in the payload.
 
