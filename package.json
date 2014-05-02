@@ -10,7 +10,7 @@
     "ratchetio",
     "ratchet"
   ],
-  "version": "0.3.5",
+  "version": "0.3.6",
   "repository": "git://github.com/rollbar/node_rollbar.git",
   "author": "Rollbar, Inc. <support@rollbar.com>",
   "license": "MIT",

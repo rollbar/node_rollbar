@@ -1,5 +1,8 @@
 # Change Log
 
+**0.3.6**
+- Allow addRequestData to be overridden. ([#24](https://github.com/rollbar/node_rollbar/pull/24))
+
 **0.3.5**
 - Handles a situation where circular references could likely exist which may result in no payload being sent at all.
 
