@@ -35,5 +35,18 @@ var suite = vows.describe('json').addBatch({
       assert.isObject(resp);
       assert.include(resp, 'ids');
     }
+  },
+  'should be able to send unicode characters properly': {
+    topic: function() {
+      var obj = {foo: '☀ ☁ ☂ ☃ ☄ ★ ☆ ☇ ☈ ☉ ☊ ☋ ☌ ☍ ☎ ☏ ☐ ☑ ☒ ☓ ☚ ☛ ☜'};
+      var testObj = {a: obj, b: obj};
+
+      notifier.reportMessageWithPayloadData('test', testObj, null, this.callback);
+    },
+    'verify there were no errors reporting the object': function(err, resp) {
+      assert.isNull(err);
+      assert.isObject(resp);
+      assert.include(resp, 'ids');
+    }
   }
 }).export(module, {error: false});

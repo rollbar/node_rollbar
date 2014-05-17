@@ -1,5 +1,8 @@
 # Change Log
 
+**0.3.7**
+- Properly escape unicode in payloads to fix server-side json parsing
+
 **0.3.6**
 - Allow addRequestData to be overridden. ([#24](https://github.com/rollbar/node_rollbar/pull/24))
 
