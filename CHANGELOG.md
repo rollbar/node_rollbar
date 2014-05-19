@@ -1,5 +1,8 @@
 # Change Log
 
+**0.3.8**
+- Revert JSON escape change and fix bug with content-length header.
+
 **0.3.7**
 - Properly escape unicode in payloads to fix server-side json parsing
 
