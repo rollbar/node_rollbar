@@ -1,11 +1,11 @@
 # Rollbar notifier for Node.js [![Build Status](https://secure.travis-ci.org/rollbar/node_rollbar.png?branch=master)](https://travis-ci.org/rollbar/node_rollbar)
 
 <!-- RemoveNext -->
-Generic library for reporting exceptions and other messages to [Rollbar](https://rollbar.com). Requires a Rollbar account.
+Node.js library for reporting exceptions and other messages to [Rollbar](https://rollbar.com). Requires a Rollbar account.
 
 <!-- Sub:[TOC] -->
 
-##Quick start
+## Quick start
 
 ```js
 // include and initialize the rollbar library with your access token
@@ -70,7 +70,11 @@ rollbar.shutdown();
 ```
 
 
+## Usage
+
 ### Uncaught exceptions
+
+Rollbar can be registered as a handler for any uncaught exceptions in your Node process:
 
 ```js
 var options = {
@@ -83,16 +87,122 @@ var options = {
 rollbar.handleUncaughtExceptions("POST_SERVER_ITEM_ACCESS_TOKEN", options);
 ```
 
+### Caught exceptions
 
-### Configuration reference
+To report an exception that you have caught, use [`handleError`](https://github.com/rollbar/node_rollbar/blob/master/rollbar.js#L152):
 
-`rollbar.init()` takes the following configuration options (pass in the second parameter):
+```js
+var rollbar = require('rollbar');
+rollbar.init('POST_SERVER_ITEM_ACCESS_TOKEN');
+
+try {
+  someCode();
+} catch (e) {
+  rollbar.handleError(e);
+  
+  // if you have a request object (or a function that returns one), pass it as the second arg
+  // see below for details about what the request object is expected to be
+  rollbar.handleError(e, request);
+  
+  // you can also pass a callback, which will be called upon success/failure
+  rollbar.handleError(e, function(err2) {
+    if (err2) {
+      // an error occurred
+    } else {
+      // success
+    }
+  });
+  
+  // if you have a request and a callback, pass the callback last
+  rollbar.handleError(e, request, callback);
+}
+```
+
+### Log messages
+
+To report a string message, possibly along with additional context, use [`reportMessage`](https://github.com/rollbar/node_rollbar/blob/master/rollbar.js#L103) or the full-powered [`reportMessageWithPayloadData`](https://github.com/rollbar/node_rollbar/blob/master/rollbar.js#L129).
+
+```js
+var rollbar = require('rollbar');
+rollbar.init('POST_SERVER_ITEM_ACCESS_TOKEN');
+
+// reports a string message at the default severity level ("error")
+rollbar.reportMessage("Timeout connecting to database");
+
+
+// reports a string message at the level "info", along with a request and callback
+// only the first param is required
+// valid severity levels: "critical", "error", "warning", "info", "debug"
+rollbar.reportMessage("Response time exceeded threshold of 1s", "warning", request, callback);
+
+// reports a string message along with additional data conforming to the Rollbar API Schema
+// documented here: https://rollbar.com/docs/api/items_post/
+// only the first two params are required
+rollbar.reportMessageWithPayloadData("Response time exceeded threshold of 1s", {
+    level: "warning",
+    custom: {
+      threshold: 1,
+      timeElapsed: 2.3
+    }
+  }, request, callback);
+```
+
+### The Request Object
+
+If your Node.js application is responding to web requests, you can send data about the current request along with each report to Rollbar. This will allow you to replay requests, track events by browser, IP address, and much more.
+
+`handleError`, `reportMessage`, and `reportMessageWithPayloadData` all accept a `request` parameter as the second, third, and third arguments respectively. If it is a function, it will be called and the result used.
+
+If you're using Express, just pass the express request object. If you're using something custom, pass an object with these keys (all optional):
+
+- `headers`: an object containing the request headers
+- `protocol`: the request protocol (e.g. `"https"`)
+- `url`: the URL starting after the domain name (e.g. `"/index.html?foo=bar"`)
+- `method`: the request method (e.g. `"GET"`)
+- `body`: the request body as a string
+- `route`: an object containing a 'path' key, which will be used as the "context" for the event (e.g. `{path: "home/index"}`)
+
+Sensitive param names will be scrubbed from the request body and, if `scrubHeaders` is configured, headers. See the `scrubFields` and `scrubHeaders` configuration options for details.
+
+### Person Tracking
+
+If your application has authenticated users, you can track which user ("person" in Rollbar parlance) was associated with each event.
+
+If you're using the Passport authentication library, this will happen automatically when you pass the request object (which will have "user" attached). Otherwise, attach one of these keys to the `request` object described in the previous section:
+
+- `rollbar_person` or `user`: an object like `{id: "123", username: "foo", email: "foo@example.com"}`. id is required, others are optional.
+- `user_id`: the user id as an integer or string, or a function which when called will return the user id
+
+Note: in Rollbar, the `id` is used to uniquely identify a person; `email` and `username` are supplemental and will be overwritten whenever a new value is received for an existing `id`. The `id` is a string up to 40 characters long.
+
+
+## Configuration reference
+
+`rollbar.init("access token", optionsObj)` takes the following configuration options:
 
   <dl>
-  <dt>host</dt>
-  <dd>The hostname of the server the node.js process is running on.
+  <dt>batchSize</dt>
+  <dd>The max number of items sent to rollbar at a time.
 
-Default: `os.hostname()`
+Default: `10`
+  </dd>
+  
+  <dt>branch</dt>
+  <dd>The branch in your version control system for this code.
+
+e.g. `'master'`
+  </dd>
+  
+  <dt>codeVersion</dt>
+  <dd>The version or revision of your code.
+
+e.g. `'868ff435d6a480929103452e5ebe8671c5c89f77'`
+  </dd>
+  
+  <dt>endpoint</dt>
+  <dd>The rollbar API base url.
+
+Default: `'https://api.rollbar.com/api/1/'`
   </dd>
   
   <dt>environment</dt>
@@ -119,53 +229,51 @@ Default: `setInterval`
 Default: `3`
   </dd>
   
-  <dt>batchSize</dt>
-  <dd>The max number of items sent to rollbar at a time.
+  <dt>host</dt>
+  <dd>The hostname of the server the node.js process is running on.
 
-Default: `10`
+Default: `os.hostname()`
   </dd>
-  
-  <dt>endpoint</dt>
-  <dd>The rollbar API base url.
 
-Default: `'https://api.rollbar.com/api/1/'`
-  </dd>
-  
   <dt>root</dt>
   <dd>The path to your code, (not including any trailing slash) which will be used to link source files on Rollbar.
 
 e.g. `'/Users/bob/Development'`
   </dd>
   
-  <dt>branch</dt>
-  <dd>The branch in your version control system for this code.
-
-e.g. `'master'`
-  </dd>
-  
-  <dt>codeVersion</dt>
-  <dd>The version or revision of your code.
-
-e.g. `'868ff435d6a480929103452e5ebe8671c5c89f77'`
-  </dd>
-  
   <dt>scrubFields</dt>
-  <dd>List of field names to scrub out of POST. Values will be replaced with astrickses. If overriding, make sure to list all fields you want to scrub, not just fields you want to add to the default. Param names are converted to lowercase before comparing against the scrub list.
+  <dd>List of field names to scrub out of the request body (POST params). Values will be replaced with asterisks. If overriding, make sure to list all fields you want to scrub, not just fields you want to add to the default. Param names are converted to lowercase before comparing against the scrub list.
 
 Default: `['passwd', 'password', 'secret', 'confirm_password', 'password_confirmation']`
   </dd>
+  
+  <dt>scrubHeaders</dt>
+  <dd>List of header names to scrub out of the request headers. Works like scrubFields.
+  
+Default: `[]`
+  </dd>
   </dl>
-
-## Contributing
-
-Contributions are welcome. The project is hosted on github at http://github.com/rollbar/node_rollbar
 
 
 ## Examples
 
-See the examples directory for more uses.
+See the [examples](https://github.com/rollbar/node_rollbar/tree/master/examples) directory for more use cases.
 
 
-## Additional Help
+## Help / Support
+
 If you have any questions, feedback, etc., drop us a line at support@rollbar.com
 
+For bug reports, please [open an issue on GitHub](https://github.com/rollbar/node_rollbar/issues).
+
+## Contributing
+
+The project is hosted on [GitHub](https://github.com/rollbar/node_rollbar). If you'd like to contribute a change:
+
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Added some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create a new Pull Request
+
+We're using vows for testing. To run the tests, run: `vows --spec test/*`
