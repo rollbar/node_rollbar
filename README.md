@@ -168,7 +168,7 @@ Sensitive param names will be scrubbed from the request body and, if `scrubHeade
 
 If your application has authenticated users, you can track which user ("person" in Rollbar parlance) was associated with each event.
 
-If you're using the Passport authentication library, this will happen automatically when you pass the request object (which will have "user" attached). Otherwise, attach one of these keys to the `request` object described in the previous section:
+If you're using the [Passport](http://passportjs.org/) authentication library, this will happen automatically when you pass the request object (which will have "user" attached). Otherwise, attach one of these keys to the `request` object described in the previous section:
 
 - `rollbar_person` or `user`: an object like `{id: "123", username: "foo", email: "foo@example.com"}`. id is required, others are optional.
 - `user_id`: the user id as an integer or string, or a function which when called will return the user id
@@ -276,4 +276,4 @@ The project is hosted on [GitHub](https://github.com/rollbar/node_rollbar). If y
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
 
-We're using vows for testing. To run the tests, run: `vows --spec test/*`
+We're using [vows](http://vowsjs.org/) for testing. To run the tests, run: `vows --spec test/*`
