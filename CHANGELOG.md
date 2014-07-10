@@ -1,5 +1,8 @@
 # Change Log
 
+**0.3.9**
+- Add `verbose` configuration option, `true` by default.
+
 **0.3.8**
 - Revert JSON escape change and fix bug with content-length header.
 
