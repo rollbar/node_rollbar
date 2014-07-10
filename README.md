@@ -252,6 +252,12 @@ Default: `['passwd', 'password', 'secret', 'confirm_password', 'password_confirm
   
 Default: `[]`
   </dd>
+  
+  <dt>verbose</dt>
+  <dd>Sets whether or not to log extra info/debug messages
+  
+Default: `true`
+  </dd>
   </dl>
 
 
