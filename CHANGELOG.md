@@ -1,5 +1,8 @@
 # Change Log
 
+**0.3.10**
+- Fix edge case where multiple errors were not handled correctly. ([#28](https://github.com/rollbar/node_rollbar/issues/28))
+
 **0.3.9**
 - Add `verbose` configuration option, `true` by default.
 
