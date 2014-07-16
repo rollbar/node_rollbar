@@ -76,6 +76,52 @@ var suite = vows.describe('parser').addBatch({
       assert.equal(parsedObj.frames[0].compiled_lineno, 5);
       assert.equal(parsedObj.frames[0].compiled_colno, 20);
     }
+  },
+  'Multiple errors': {
+    'Simple': {
+      topic: function(err) {
+        var exc1 = new Error('First error');
+        var exc2 = new Error('Second error');
+        var containerExc = new Error();
+        containerExc.errors = [exc1, exc2];
+        return parser.parseException(containerExc, this.callback);
+      },
+      'it uses the first error': function(err, parsedObj) {
+        assert.equal(parsedObj.message, 'First error');
+      }
+    },
+    'exception.errors is an object': {
+      topic: function(err) {
+        var exc1 = new Error('First error');
+        var exc2 = new Error('Second error');
+        var containerExc = new Error();
+        containerExc.errors = {first: exc1, second: exc2};
+        return parser.parseException(containerExc, this.callback);
+      },
+      'one of the errors was used': function(err, parsedObj) {
+        assert.isTrue(parsedObj.message === 'First error' || parsedObj.message === 'Second error');
+      }
+    },
+    'exception.errors is null': {
+      topic: function(err) {
+        var containerExc = new Error('Container error');
+        containerExc.errors = null;
+        return parser.parseException(containerExc, this.callback);
+      },
+      'the container error was used': function(err, parsedObj) {
+        assert.equal(parsedObj.message, 'Container error');
+      }
+    },
+    'exception.errors is an empty array': {
+      topic: function(err) {
+        var containerExc = new Error('Container error');
+        containerExc.errors = [];
+        return parser.parseException(containerExc, this.callback);
+      },
+      'the container error was used': function(err, parsedObj) {
+        assert.equal(parsedObj.message, 'Container error');
+      }
+    }
   }
 }).export(module, {error: false});
 

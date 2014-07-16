@@ -1,5 +1,5 @@
 test:
 	@NODE_ENV=test \
-		./node_modules/.bin/mocha --reporter dot
+		./node_modules/.bin/vows --spec test/*
 
 .PHONY: test
