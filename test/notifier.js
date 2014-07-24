@@ -9,6 +9,42 @@ var ACCESS_TOKEN = '8802be7c990a4922beadaaefb6e0327b';
 rollbar.init(ACCESS_TOKEN, {environment: 'playground', handler: 'inline'});
 
 var suite = vows.describe('notifier').addBatch({
+  'handleError with a normal error': {
+    topic: function() {
+      var test = function() {
+        var x = thisVariableIsNotDefined;
+      };
+      try {
+        test();
+      } catch (e) {
+        notifier.handleError(e, this.callback);
+      }
+    },
+    'verify no error is returned': function(err, resp) {
+      assert.isNull(err);
+      assert.isObject(resp);
+      assert.include(resp, 'ids');
+      // TODO - verify contents of payload
+    }
+  },
+  'handleErrorWithPayloadData with a normal error': {
+    topic: function() {
+      var test = function() {
+        var x = thisVariableIsNotDefined;
+      };
+      try {
+        test();
+      } catch (e) {
+        notifier.handleErrorWithPayloadData(e, {level: "warning"}, this.callback);
+      }
+    },
+    'verify no error is returned': function(err, resp) {
+      assert.isNull(err);
+      assert.isObject(resp);
+      assert.include(resp, 'ids');
+      // TODO - verify contents of payload
+    }
+  },
   'handleError with an Error that has a missing stack': {
     topic: function() {
       var e = new Error('test error');

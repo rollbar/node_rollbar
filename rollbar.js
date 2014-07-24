@@ -172,6 +172,31 @@ exports.reportMessageWithPayloadData = notifier.reportMessageWithPayloadData;
  */
 exports.handleError = notifier.handleError;
 
+/*
+ * handleErrorWithPayloadData(err, payloadData, request, callback)
+ *
+ * The same as handleError() but allows you to specify additional data to log along with the error,
+ * as well as other payload options.
+ *
+ * Parameters:
+ *  err - an Exception/Error instance
+ *  payloadData - an object containing keys/values to be sent along with the error report.
+ *    e.g. {level: "warning"}
+ *  request - optional request object to send along with the message
+ *  callback - optional callback that will be invoked depending on the handler method used.
+ *    Should take a single parameter to denote if there was an error.
+ *
+ *  Examples:
+ *
+ *   rollbar.handleError(new Error("Could not connect to database"), {level: "warning"});
+ *   rollbar.handleError(new Error("Could not connect to database"), 
+ *    {custom: {someKey: "its value, otherKey: ["other", "value"]}});
+ *   rollbar.handleError(new Error("error message"), {}, req, function(err) {
+ *     // error was queued/sent to rollbar
+ *   });
+ */
+exports.handleErrorWithPayloadData = notifier.handleErrorWithPayloadData;
+
 
 exports.shutdown = function(callback) {
   notifier.shutdown(callback);
