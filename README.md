@@ -120,12 +120,12 @@ try {
   rollbar.handleError(e, request, callback);
 
   // to specify payload options - like extra data, or the level - use handleErrorWithPayloadData
-  rollbar.handleError(e, {level: "warning", custom: {someKey: "arbitrary value"}});
+  rollbar.handleErrorWithPayloadData(e, {level: "warning", custom: {someKey: "arbitrary value"}});
 
   // can also take request and callback, like handleError:
-  rollbar.handleError(e, {level: "info"}, request);
-  rollbar.handleError(e, {level: "info"}, callback);
-  rollbar.handleError(e, {level: "info"}, request, callback);
+  rollbar.handleErrorWithPayloadData(e, {level: "info"}, request);
+  rollbar.handleErrorWithPayloadData(e, {level: "info"}, callback);
+  rollbar.handleErrorWithPayloadData(e, {level: "info"}, request, callback);
 }
 ```
 
