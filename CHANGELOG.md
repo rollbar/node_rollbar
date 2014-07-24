@@ -1,5 +1,8 @@
 # Change Log
 
+**0.3.11**
+- Add `handleErrorWithPayloadData` function, exposing more of the Rollbar API when reporting errors. ([#29](https://github.com/rollbar/node_rollbar/pull/29))
+
 **0.3.10**
 - Fix edge case where multiple errors were not handled correctly. ([#28](https://github.com/rollbar/node_rollbar/issues/28))
 
