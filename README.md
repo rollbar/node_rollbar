@@ -89,7 +89,7 @@ rollbar.handleUncaughtExceptions("POST_SERVER_ITEM_ACCESS_TOKEN", options);
 
 ### Caught exceptions
 
-To report an exception that you have caught, use [`handleError`](https://github.com/rollbar/node_rollbar/blob/master/rollbar.js#L152):
+To report an exception that you have caught, use [`handleError`](https://github.com/rollbar/node_rollbar/blob/master/rollbar.js#L152) or the full-powered `handleErrorWithPayloadData`:
 
 ```js
 var rollbar = require('rollbar');
@@ -115,6 +115,14 @@ try {
   
   // if you have a request and a callback, pass the callback last
   rollbar.handleError(e, request, callback);
+
+  // to specify payload options - like extra data, or the level - use handleErrorWithPayloadData
+  rollbar.handleError(e, {level: "warning", custom: {someKey: "arbitrary value"}});
+
+  // can also take request and callback, like handleError:
+  rollbar.handleError(e, {level: "info"}, request);
+  rollbar.handleError(e, {level: "info"}, callback);
+  rollbar.handleError(e, {level: "info"}, request, callback);
 }
 ```
 
