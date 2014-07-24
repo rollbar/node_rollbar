@@ -14,6 +14,9 @@ rollbar.init("POST_SERVER_ITEM_ACCESS_TOKEN");
 
 // record a generic message and send to rollbar
 rollbar.reportMessage("Hello world!");
+
+// more is required to automatically detect and report errors.
+// keep reading for details.
 ```
 
 <!-- RemoveNextIfProject -->
@@ -89,7 +92,7 @@ rollbar.handleUncaughtExceptions("POST_SERVER_ITEM_ACCESS_TOKEN", options);
 
 ### Caught exceptions
 
-To report an exception that you have caught, use [`handleError`](https://github.com/rollbar/node_rollbar/blob/master/rollbar.js#L152) or the full-powered `handleErrorWithPayloadData`:
+To report an exception that you have caught, use [`handleError`](https://github.com/rollbar/node_rollbar/blob/master/rollbar.js#L152) or the full-powered [`handleErrorWithPayloadData`](https://github.com/rollbar/node_rollbar/blob/master/rollbar.js#L176):
 
 ```js
 var rollbar = require('rollbar');
@@ -159,7 +162,7 @@ rollbar.reportMessageWithPayloadData("Response time exceeded threshold of 1s", {
 
 If your Node.js application is responding to web requests, you can send data about the current request along with each report to Rollbar. This will allow you to replay requests, track events by browser, IP address, and much more.
 
-`handleError`, `reportMessage`, and `reportMessageWithPayloadData` all accept a `request` parameter as the second, third, and third arguments respectively. If it is a function, it will be called and the result used.
+`handleError`, `reportMessage`, `handleErrorWithPayloadData`, and `reportMessageWithPayloadData` all accept a `request` parameter as the second, third, third, and third arguments respectively. If it is a function, it will be called and the result used.
 
 If you're using Express, just pass the express request object. If you're using something custom, pass an object with these keys (all optional):
 
@@ -214,7 +217,7 @@ Default: `'https://api.rollbar.com/api/1/'`
   </dd>
   
   <dt>environment</dt>
-  <dd>The environment the code is running in.
+  <dd>The environment the code is running in, e.g. "production"
 
 Default: `'unspecified'`
   </dd>
@@ -240,7 +243,7 @@ Default: `3`
   <dt>host</dt>
   <dd>The hostname of the server the node.js process is running on.
 
-Default: `os.hostname()`
+Default: hostname returned from `os.hostname()`
   </dd>
 
   <dt>root</dt>
