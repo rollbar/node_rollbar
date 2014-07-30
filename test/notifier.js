@@ -131,5 +131,22 @@ var suite = vows.describe('notifier').addBatch({
       assert.equal(params.confirm_password, '******');
       assert.equal(params.otherParam, 'test');
     }
+  },
+  'scrubRequestParams ignores null or undefined values': {
+    topic: function() {
+      var callback = this.callback;
+      return callback(null,
+          notifier._scrubRequestParams(['nullValue', 'undefinedValue', 'emptyValue'], 
+            {nullValue: null,
+             undefinedValue: undefined,
+             emptyValue: '',
+             goodValue: 'goodValue'}));
+    },
+    'verify fields are scrubbed': function(err, params) {
+      assert.equal(params.nullValue, null);
+      assert.equal(params.undefinedValue, undefined);
+      assert.equal(params.emptyValue, '');
+      assert.equal(params.goodValue, 'goodValue');
+    }
   }
 }).export(module, {error: false});
