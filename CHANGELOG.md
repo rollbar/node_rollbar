@@ -1,5 +1,8 @@
 # Change Log
 
+**0.3.12**
+- Fix param scrubbing failing when the value is null/undefined ([#30](https://github.com/rollbar/node_rollbar/pull/30))
+
 **0.3.11**
 - Add `handleErrorWithPayloadData` function, exposing more of the Rollbar API when reporting errors. ([#29](https://github.com/rollbar/node_rollbar/pull/29))
 
