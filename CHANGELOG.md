@@ -1,5 +1,11 @@
 # Change Log
 
+**0.4.0**
+- Set the default handler to be `inline` so that if the program crashes since some configurations will shut down before the `setInterval()` is fired.
+
+**0.3.13**
+- Allow environment and framework to be overridden by payload data.
+
 **0.3.12**
 - Fix param scrubbing failing when the value is null/undefined ([#30](https://github.com/rollbar/node_rollbar/pull/30))
 

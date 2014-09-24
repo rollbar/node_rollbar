@@ -70,7 +70,7 @@ exports.init = function(accessToken, options) {
    *
    *  host - Default: os.hostname() - the hostname of the server the node.js process is running on
    *  environment - Default: 'unspecified' - the environment the code is running in. e.g. 'staging'
-   *  handler - Default: 'setInterval' - the method that the notifier will use to report exceptions,
+   *  handler - Default: 'inline' - the method that the notifier will use to report exceptions,
    *    choices:
    *      setInterval: all items that are queued up are sent to rollbar in batches in a setInterval callback
    *      nextTick: all items that are queued up are sent to rollbar in a process.nextTick callback
