@@ -280,7 +280,7 @@ See the [examples](https://github.com/rollbar/node_rollbar/tree/master/examples)
 
 The default configuration uses the `inline` handler which will cause errors to be reported to Rollbar at the time they occur. This works well for small applications but can quickly become a problem for high-throughput apps. For better performance, the `setInterval` handler is recommended since it queues up errors before sending them.
 
-Note: It is possible to get into the situation where the `setInterval` handler does not fire before your app closes. You should make sure to call `rollbar.shutdown()` in order to flush all errors before exiting.
+When using a handler besides `inline`, you should make sure to call `rollbar.shutdown()` in order to flush all errors before exiting.
 
 ## Help / Support
 
