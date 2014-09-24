@@ -231,7 +231,7 @@ Default: `'unspecified'`
 - nextTick -- all items that are queued up are sent to rollbar in a process.nextTick callback
 - inline -- items are sent to rollbar as they are queued up, one at-a-time
 
-Default: `setInterval`
+Default: `inline`
   </dd>
   
   <dt>handlerInterval</dt>
@@ -276,6 +276,11 @@ Default: `true`
 
 See the [examples](https://github.com/rollbar/node_rollbar/tree/master/examples) directory for more use cases.
 
+## Performance
+
+The default configuration uses the `inline` handler which will cause errors to be reported to Rollbar at the time they occur. This works well for small applications but can quickly become a problem for high-throughput apps. For better performance, the `setInterval` handler is recommended since it queues up errors before sending them.
+
+Note: It is possible to get into the situation where the `setInterval` handler does not fire before your app closes. You should make sure to call `rollbar.shutdown()` in order to flush all errors before exiting.
 
 ## Help / Support
 
