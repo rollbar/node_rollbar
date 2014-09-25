@@ -2,6 +2,7 @@
 
 **0.4.0**
 - Set the default handler to be `inline` so that if the program crashes since some configurations will shut down before the `setInterval()` is fired.
+  - To maintain v0.3 behavior, simply add `handler: 'setInterval'` to the config object passed to `rollbar.init()`.
 
 **0.3.13**
 - Allow environment and framework to be overridden by payload data.
