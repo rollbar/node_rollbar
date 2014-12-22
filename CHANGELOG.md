@@ -1,5 +1,9 @@
 # Change Log
 
+**0.4.1**
+- Fixed a bug that caused the library to crash if a request was provided but did not have a `connection` object.
+- Added some error logging to the `uncaughtException` handler to output uncaught exceptions to the log and to log if there were any problems handling the uncaught exception.
+
 **0.4.0**
 - Set the default handler to be `inline` so that if the program crashes since some configurations will shut down before the `setInterval()` is fired.
   - To maintain v0.3 behavior, simply add `handler: 'setInterval'` to the config object passed to `rollbar.init()`.
