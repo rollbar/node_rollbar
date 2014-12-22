@@ -253,8 +253,15 @@ exports.handleUncaughtExceptions = function(accessToken, options) {
 
   if (initialized) {
     process.once('uncaughtException', function(err) {
+      console.error('[Rollbar] Handling uncaught exception');
+      console.error(err);
+
       notifier.changeHandler('inline');
       notifier.handleError(err, function(err) {
+        if (err) {
+          console.error('[Rollbar] Encountered an error while handling an uncaught exception.');
+          console.error(err);
+        }
         exports.shutdown(function(e) {
           if (exitOnUncaught) {
             process.exit(1);
