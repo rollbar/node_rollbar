@@ -148,5 +148,80 @@ var suite = vows.describe('notifier').addBatch({
       assert.equal(params.emptyValue, '');
       assert.equal(params.goodValue, 'goodValue');
     }
+  },
+  'extractIp returns req.ip first': {
+    topic: function() {
+      var dummyReq = {
+        ip: 'req.ip IP address',
+        headers: {
+          'x-real-ip': 'X-Real-Ip IP address',
+          'x-forwarded-for': 'X-Forwarded-For IP address'
+        },
+        connection: {
+          remoteAddress: 'Connection IP address'
+        }
+      };
+      return this.callback(notifier._extractIp(dummyReq));
+    },
+    'verify the IP': function(ip) {
+      assert.equal(ip, 'req.ip IP address');
+    }
+  },
+  'extractIp returns req.header["x-real-ip"] if req.ip doesn\'t exist': {
+    topic: function() {
+      var dummyReq = {
+        headers: {
+          'x-real-ip': 'X-Real-Ip IP address',
+          'x-forwarded-for': 'X-Forwarded-For IP address'
+        },
+        connection: {
+          remoteAddress: 'Connection IP address'
+        }
+      };
+      return this.callback(notifier._extractIp(dummyReq));
+    },
+    'verify the IP': function(ip) {
+      assert.equal(ip, 'X-Real-Ip IP address');
+    }
+  },
+  'extractIp returns req.header["x-forwarded-for"] if x-real-ip doesn\'t exist': {
+    topic: function() {
+      var dummyReq = {
+        headers: {
+          'x-forwarded-for': 'X-Forwarded-For IP address'
+        },
+        connection: {
+          remoteAddress: 'Connection IP address'
+        }
+      };
+      return this.callback(notifier._extractIp(dummyReq));
+    },
+    'verify the IP': function(ip) {
+      assert.equal(ip, 'X-Forwarded-For IP address');
+    }
+  },
+  'extractIp returns req.connection.remoteAddress x-forwarded-for doesn\'t exist': {
+    topic: function() {
+      var dummyReq = {
+        headers: {
+        },
+        connection: {
+          remoteAddress: 'Connection IP address'
+        }
+      };
+      return this.callback(notifier._extractIp(dummyReq));
+    },
+    'verify the IP': function(ip) {
+      assert.equal(ip, 'Connection IP address');
+    }
+  },
+  'extractIp doesn\'t crash if req.connection/req.headers doesn\'t exist': {
+    topic: function() {
+      var dummyReq = {};
+      return this.callback(notifier._extractIp(dummyReq));
+    },
+    'verify the IP': function(ip) {
+      assert.equal(ip, undefined);
+    }
   }
 }).export(module, {error: false});
