@@ -1,5 +1,8 @@
 # Change Log
 
+**0.4.2**
+- Fixed a bug that caused the library to crash if a request was provided but did not have a `headers` object. ([#31](https://github.com/rollbar/node_rollbar/pull/31))
+
 **0.4.1**
 - Fixed a bug that caused the library to crash if a request was provided but did not have a `connection` object.
 - Added some error logging to the `uncaughtException` handler to output uncaught exceptions to the log and to log if there were any problems handling the uncaught exception.

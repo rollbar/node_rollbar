@@ -78,8 +78,8 @@ var suite = vows.describe('notifier').addBatch({
     topic: function() {
       notifier.reportMessage('test', 'debug', 1, this.callback);
     },
-    'verify an error is returned': function(err) {
-      assert.isNotNull(err);
+    'verify no error is returned': function(err) {
+      assert.isNull(err);
     }
   },
   'reportMessageWithPayloadData with valid level and fingerprint': {
