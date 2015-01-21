@@ -1,5 +1,8 @@
 # Change Log
 
+**0.4.3**
+- Support HTTP proxies. ([#32](https://github.com/rollbar/node_rollbar/pull/32))
+
 **0.4.2**
 - Fixed a bug that caused the library to crash if a request was provided but did not have a `headers` object. ([#31](https://github.com/rollbar/node_rollbar/pull/31))
 
