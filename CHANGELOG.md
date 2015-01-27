@@ -1,5 +1,8 @@
 # Change Log
 
+**0.4.4**
+- Fix a bug when `req.socket` was undefined. ([#33](https://github.com/rollbar/node_rollbar/pull/33))
+
 **0.4.3**
 - Support HTTP proxies. ([#32](https://github.com/rollbar/node_rollbar/pull/32))
 
