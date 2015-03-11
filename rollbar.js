@@ -252,21 +252,25 @@ exports.handleUncaughtExceptions = function(accessToken, options) {
   exports.init(accessToken, options);
 
   if (initialized) {
-    process.once('uncaughtException', function(err) {
-      console.error('[Rollbar] Handling uncaught exception');
+    process.on('uncaughtException', function(err) {
+      console.error('[Rollbar] Handling uncaught exception.');
       console.error(err);
 
-      notifier.changeHandler('inline');
+      if (exitOnUncaught) {
+        notifier.changeHandler('inline');
+      }
+
       notifier.handleError(err, function(err) {
         if (err) {
           console.error('[Rollbar] Encountered an error while handling an uncaught exception.');
           console.error(err);
         }
-        exports.shutdown(function(e) {
-          if (exitOnUncaught) {
+
+        if (exitOnUncaught) {
+          exports.shutdown(function(e) {
             process.exit(1);
-          }
-        });
+          });
+        }
       });
     });
   } else {
