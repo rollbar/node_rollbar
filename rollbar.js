@@ -232,19 +232,18 @@ exports.errorHandler = function(accessToken, options) {
 
 exports.handleUncaughtExceptions = function(accessToken, options) {
   /*
-   * Registers a handler for the process.uncaughtException event. The handler
-   * will immediately send the uncaught exception + all queued items to rollbar
-   * and then shut down the rollbar library via rollbar.shutdown().
+   * Registers a handler for the process.uncaughtException event.
    *
-   * If options.exitOnUncaught is set, the notifier will optionally call process.exit(1)
-   * once the rollbar items are processed.
+   * If options.exitOnUncaughtException is set to true, the notifier will
+   * immediately send the uncaught exception + all queued items to rollbar,
+   * then call process.exit(1).
    *
    * Note: The node.js authors advise against using these type of handlers.
    * More info: http://nodejs.org/api/process.html#process_event_uncaughtexception
    *
    */
 
-  // Default to exiting on uncaught exceptions unless options.exitOnUncaughtException is set
+  // Default to not exiting on uncaught exceptions unless options.exitOnUncaughtException is set.
   options = options || {};
   var exitOnUncaught = options.exitOnUncaughtException === undefined ? false : !!options.exitOnUncaughtException;
   delete options.exitOnUncaughtException;
