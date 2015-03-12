@@ -1,5 +1,8 @@
 # Change Log
 
+**0.4.5**
+- Fix a bug that was causing the notifier to not catch all uncaught exceptions. ([#36](https://github.com/rollbar/node_rollbar/pull/36))
+
 **0.4.4**
 - Fix a bug when `req.socket` was undefined. ([#33](https://github.com/rollbar/node_rollbar/pull/33))
 
