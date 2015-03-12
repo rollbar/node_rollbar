@@ -84,7 +84,7 @@ var options = {
   // Call process.exit(1) when an uncaught exception occurs but after reporting all
   // pending errors to Rollbar.
   //
-  // Default: true
+  // Default: false
   exitOnUncaughtException: true
 };
 rollbar.handleUncaughtExceptions("POST_SERVER_ITEM_ACCESS_TOKEN", options);
