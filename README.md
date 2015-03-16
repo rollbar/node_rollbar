@@ -141,7 +141,7 @@ rollbar.init('POST_SERVER_ITEM_ACCESS_TOKEN');
 rollbar.reportMessage("Timeout connecting to database");
 
 
-// reports a string message at the level "info", along with a request and callback
+// reports a string message at the level "warning", along with a request and callback
 // only the first param is required
 // valid severity levels: "critical", "error", "warning", "info", "debug"
 rollbar.reportMessage("Response time exceeded threshold of 1s", "warning", request, callback);
