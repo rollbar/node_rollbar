@@ -1,3 +1,7 @@
+/*jslint devel: true, nomen: true, plusplus: true, regexp: true, indent: 2, maxlen: 100 */
+
+"use strict";
+
 var assert = require('assert');
 var vows = require('vows');
 

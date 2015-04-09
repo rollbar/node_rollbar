@@ -30,7 +30,6 @@
   "devDependencies": {
     "express": "*",
     "jade": "~0.27.7",
-    "jslint": "^0.9.0-pre006",
     "vows": "~0.7.0"
   }
 }
