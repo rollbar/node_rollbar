@@ -74,14 +74,8 @@ exports.init = function (accessToken, options) {
    *
    *  host - Default: os.hostname() - the hostname of the server the node.js process is running on
    *  environment - Default: 'unspecified' - the environment the code is running in. e.g. 'staging'
-   *  handler - Default: 'inline' - the method that the notifier will use to report exceptions,
-   *    choices:
-   *      setInterval: all items that are queued up are sent to rollbar in batches in a setInterval
-   *        callback
-   *      nextTick: all items that are queued up are sent to rollbar in a process.nextTick callback
-   *      inline: items are sent to rollbar as they are queued up, one at-a-time
-   *  handlerInterval - Default: 3 - if handler=setInterval, this is the number of seconds between
-   *    batch posts of items to rollbar
+   *  interval - Default: 10 - The number of milliseconds to wait between sending batches of items
+   *    to Rollbar.
    *  batchSize - Default: 10 - the max number of items sent to rollbar at a time
    *  endpoint - Default: 'https://api.rollbar.com/api/1/' - the url to send items to
    *  root - the path to your code, (not including any trailing slash) which will be used to link
