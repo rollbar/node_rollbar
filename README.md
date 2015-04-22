@@ -62,7 +62,7 @@ rollbar.init("POST_SERVER_ITEM_ACCESS_TOKEN");
 Other options can be passed into the init() function using a second parameter. E.g.:
 
 ```js
-// Queue up and report messages/exceptions to rollbar every 5 seconds
+// Configure the library to send errors to api.rollbar.com
 rollbar.init("POST_SERVER_ITEM_ACCESS_TOKEN", {
   environment: "staging",
   endpoint: "https://api.rollbar.com/api/1/"
