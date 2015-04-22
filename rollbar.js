@@ -39,7 +39,6 @@ var initialized = false;
  *     var rollbar = require('rollbar');
  *     rollbar.init('ROLLBAR_ACCESS_TOKEN');
  *     rollbar.reportMessage('Hello world', 'debug');
- *     rollbar.shutdown(); // Processes any remaining items and stops any running timers
  *
  *  Uncaught exceptions - 
  *
@@ -74,9 +73,6 @@ exports.init = function (accessToken, options) {
    *
    *  host - Default: os.hostname() - the hostname of the server the node.js process is running on
    *  environment - Default: 'unspecified' - the environment the code is running in. e.g. 'staging'
-   *  interval - Default: 10 - The number of milliseconds to wait between sending batches of items
-   *    to Rollbar.
-   *  batchSize - Default: 10 - the max number of items sent to rollbar at a time
    *  endpoint - Default: 'https://api.rollbar.com/api/1/' - the url to send items to
    *  root - the path to your code, (not including any trailing slash) which will be used to link
    *    source files on rollbar
@@ -111,15 +107,20 @@ exports.init = function (accessToken, options) {
  *  message - a string to send to rollbar
  *  level - Default: 'error' - optional level, 'debug', 'info', 'warning', 'error', 'critical'
  *  request - optional request object to send along with the message
- *  callback - optional callback that will be invoked depending on the handler method used.
- *    Should take a single parameter to denote if there was an error.
+ *  callback - optional callback that will be invoked once the message was reported.
+ *    callback should take 3 parameters: callback(err, payloadData, response)
  *
  * Examples:
  *
  *  rollbar.reportMessage("User purchased something awesome!", "info");
  *
- *  rollbar.reportMessage("Something suspicious...", "debug", null, function (err) {
- *    // message was queued/sent to rollbar
+ *  rollbar.reportMessage("Something suspicious...", "debug", null, function (err, payloadData) {
+ *    if (err) {
+ *      console.error('Error sending to Rollbar:', err);
+ *    } else {
+ *      console.log('Reported message to rollbar:');
+ *      console.log(payloadData);
+ *    }
  *  });
  *
  */
@@ -136,8 +137,8 @@ exports.reportMessage = notifier.reportMessage;
  *  payloadData - an object containing key/values to be sent along with the message.
  *    e.g. {level: "warning", fingerprint: "CustomerFingerPrint"}
  *  request - optional request object to send along with the message
- *  callback - optional callback that will be invoked depending on the handler method used.
- *    Should take a single parameter to denote if there was an error.
+ *  callback - optional callback that will be invoked once the message has been sent to Rollbar.
+ *    callback should take 3 parameters: callback(err, payloadData, response)
  *
  * Examples:
  *
@@ -157,8 +158,8 @@ exports.reportMessageWithPayloadData = notifier.reportMessageWithPayloadData;
  * Parameters:
  *  err - an Exception/Error instance
  *  request - an optional request object to send along with the error
- *  callback - optional callback that will be invoked depending on the handler method used.
- *    Should take a single parameter to denote if there was an error.
+ *  callback - optional callback that will be invoked after the error was sent to Rollbar.
+ *    callback should take 3 parameters: callback(err, payloadData, response)
  *
  * Examples:
  *
@@ -184,8 +185,8 @@ exports.handleError = notifier.handleError;
  *  payloadData - an object containing keys/values to be sent along with the error report.
  *    e.g. {level: "warning"}
  *  request - optional request object to send along with the message
- *  callback - optional callback that will be invoked depending on the handler method used.
- *    Should take a single parameter to denote if there was an error.
+ *  callback - optional callback that will be invoked after the error was sent to Rollbar.
+ *    callback should take 3 parameters: callback(err, payloadData, response)
  *
  *  Examples:
  *
@@ -197,11 +198,6 @@ exports.handleError = notifier.handleError;
  *   });
  */
 exports.handleErrorWithPayloadData = notifier.handleErrorWithPayloadData;
-
-
-exports.shutdown = function (callback) {
-  notifier.shutdown(callback);
-};
 
 
 exports.errorHandler = function (accessToken, options) {
@@ -271,9 +267,7 @@ exports.handleUncaughtExceptions = function (accessToken, options) {
         }
 
         if (exitOnUncaught) {
-          exports.shutdown(function () {
-            process.exit(1);
-          });
+          process.exit(1);
         }
       });
     });
