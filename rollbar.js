@@ -1,3 +1,7 @@
+/*jslint devel: true, nomen: true, indent: 2, maxlen: 100 */
+
+"use strict";
+
 var api = require('./lib/api');
 var notifier = require('./lib/notifier');
 var parser = require('./lib/parser');
@@ -21,7 +25,7 @@ var initialized = false;
  * 
  *     var app = express();
  *    
- *     app.get('/', function(req, res) {
+ *     app.get('/', function (req, res) {
  *       ...
  *     });
  *    
@@ -44,7 +48,7 @@ var initialized = false;
  *
  *  Send exceptions and request data -
  *
- *     app.get('/', function(req, res) {
+ *     app.get('/', function (req, res) {
  *       try {
  *         ...
  *       } catch (e) {
@@ -54,13 +58,13 @@ var initialized = false;
  *
  *  Track people - 
  *
- *     app.get('/', function(req, res) {
+ *     app.get('/', function (req, res) {
  *       req.userId = 12345; // or req.user_id
  *       rollbar.reportMessage('Interesting event', req);
  *     });
  */
 
-exports.init = function(accessToken, options) {
+exports.init = function (accessToken, options) {
   /*
    * Initialize the rollbar library.
    *
@@ -70,15 +74,12 @@ exports.init = function(accessToken, options) {
    *
    *  host - Default: os.hostname() - the hostname of the server the node.js process is running on
    *  environment - Default: 'unspecified' - the environment the code is running in. e.g. 'staging'
-   *  handler - Default: 'inline' - the method that the notifier will use to report exceptions,
-   *    choices:
-   *      setInterval: all items that are queued up are sent to rollbar in batches in a setInterval callback
-   *      nextTick: all items that are queued up are sent to rollbar in a process.nextTick callback
-   *      inline: items are sent to rollbar as they are queued up, one at-a-time
-   *  handlerInterval - Default: 3 - if handler=setInterval, this is the number of seconds between batch posts of items to rollbar
+   *  interval - Default: 10 - The number of milliseconds to wait between sending batches of items
+   *    to Rollbar.
    *  batchSize - Default: 10 - the max number of items sent to rollbar at a time
    *  endpoint - Default: 'https://api.rollbar.com/api/1/' - the url to send items to
-   *  root - the path to your code, (not including any trailing slash) which will be used to link source files on rollbar
+   *  root - the path to your code, (not including any trailing slash) which will be used to link
+   *    source files on rollbar
    *  branch - the branch in your version control system for this code
    *  codeVersion - the version or revision of your code
    *  
@@ -117,7 +118,7 @@ exports.init = function(accessToken, options) {
  *
  *  rollbar.reportMessage("User purchased something awesome!", "info");
  *
- *  rollbar.reportMessage("Something suspicious...", "debug", null, function(err) {
+ *  rollbar.reportMessage("Something suspicious...", "debug", null, function (err) {
  *    // message was queued/sent to rollbar
  *  });
  *
@@ -141,7 +142,7 @@ exports.reportMessage = notifier.reportMessage;
  * Examples:
  *
  *  rollbar.reportMessageWithPayloadData("Memcache miss",
- *    {level: "debug", fingerprint: "Memcache-miss"}, null, function(err) {
+ *    {level: "debug", fingerprint: "Memcache-miss"}, null, function (err) {
  *    // message was queued/sent to rollbar
  *  });
  *
@@ -163,7 +164,7 @@ exports.reportMessageWithPayloadData = notifier.reportMessageWithPayloadData;
  *
  *  rollbar.handleError(new Error("Could not connect to the database"));
  *
- *  rollbar.handleError(new Error("it's just foobar..."), function(err) {
+ *  rollbar.handleError(new Error("it's just foobar..."), function (err) {
  *    // error was queued/sent to rollbar
  *  });
  *
@@ -191,19 +192,19 @@ exports.handleError = notifier.handleError;
  *   rollbar.handleError(new Error("Could not connect to database"), {level: "warning"});
  *   rollbar.handleError(new Error("Could not connect to database"), 
  *    {custom: {someKey: "its value, otherKey: ["other", "value"]}});
- *   rollbar.handleError(new Error("error message"), {}, req, function(err) {
+ *   rollbar.handleError(new Error("error message"), {}, req, function (err) {
  *     // error was queued/sent to rollbar
  *   });
  */
 exports.handleErrorWithPayloadData = notifier.handleErrorWithPayloadData;
 
 
-exports.shutdown = function(callback) {
+exports.shutdown = function (callback) {
   notifier.shutdown(callback);
 };
 
 
-exports.errorHandler = function(accessToken, options) {
+exports.errorHandler = function (accessToken, options) {
   /*
    * A middleware handler for connect and express.js apps. For a list
    * of supported options, see the init() docs above.
@@ -212,25 +213,28 @@ exports.errorHandler = function(accessToken, options) {
    * will be sent to rollbar when this middleware is installed.
    */
   exports.init(accessToken, options);
-  return function(err, req, res, next) {
-    var cb = function(rollbarErr) {
+  return function (err, req, res, next) {
+    var cb = function (rollbarErr) {
       if (rollbarErr) {
         console.error('[Rollbar] Error reporting to rollbar, ignoring: ' + rollbarErr);
       }
       return next(err, req, res);
     };
+
     if (!err) {
       return next(err, req, res);
-    } else if (err instanceof Error) {
-      return notifier.handleError(err, req, cb);
-    } else {
-      return notifier.reportMessage('Error: ' + err, 'error', req, cb);
     }
+
+    if (err instanceof Error) {
+      return notifier.handleError(err, req, cb);
+    }
+
+    return notifier.reportMessage('Error: ' + err, 'error', req, cb);
   };
 };
 
 
-exports.handleUncaughtExceptions = function(accessToken, options) {
+exports.handleUncaughtExceptions = function (accessToken, options) {
   /*
    * Registers a handler for the process.uncaughtException event.
    *
@@ -245,13 +249,14 @@ exports.handleUncaughtExceptions = function(accessToken, options) {
 
   // Default to not exiting on uncaught exceptions unless options.exitOnUncaughtException is set.
   options = options || {};
-  var exitOnUncaught = options.exitOnUncaughtException === undefined ? false : !!options.exitOnUncaughtException;
+  var exitOnUncaught = options.exitOnUncaughtException === undefined ?
+        false : !!options.exitOnUncaughtException;
   delete options.exitOnUncaughtException;
 
   exports.init(accessToken, options);
 
   if (initialized) {
-    process.on('uncaughtException', function(err) {
+    process.on('uncaughtException', function (err) {
       console.error('[Rollbar] Handling uncaught exception.');
       console.error(err);
 
@@ -259,14 +264,14 @@ exports.handleUncaughtExceptions = function(accessToken, options) {
         notifier.changeHandler('inline');
       }
 
-      notifier.handleError(err, function(err) {
+      notifier.handleError(err, function (err) {
         if (err) {
           console.error('[Rollbar] Encountered an error while handling an uncaught exception.');
           console.error(err);
         }
 
         if (exitOnUncaught) {
-          exports.shutdown(function(e) {
+          exports.shutdown(function () {
             process.exit(1);
           });
         }

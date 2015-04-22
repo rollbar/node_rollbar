@@ -10,7 +10,7 @@
     "ratchetio",
     "ratchet"
   ],
-  "version": "0.4.5",
+  "version": "0.5.0",
   "repository": "git://github.com/rollbar/node_rollbar.git",
   "author": "Rollbar, Inc. <support@rollbar.com>",
   "license": "MIT",
@@ -24,7 +24,8 @@
   "dependencies": {
     "node-uuid": "1.4.x",
     "lru-cache": "~2.2.1",
-    "json-stringify-safe": "~5.0.0"
+    "json-stringify-safe": "~5.0.0",
+    "async": "~0.9.0"
   },
   "devDependencies": {
     "express": "*",
