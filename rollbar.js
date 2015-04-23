@@ -256,10 +256,6 @@ exports.handleUncaughtExceptions = function (accessToken, options) {
       console.error('[Rollbar] Handling uncaught exception.');
       console.error(err);
 
-      if (exitOnUncaught) {
-        notifier.changeHandler('inline');
-      }
-
       notifier.handleError(err, function (err) {
         if (err) {
           console.error('[Rollbar] Encountered an error while handling an uncaught exception.');
