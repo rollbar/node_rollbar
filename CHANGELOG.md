@@ -1,5 +1,8 @@
 # Change Log
 
+**0.5.1**
+- Fixed a bug that occurred if `exitOnUncaught` was set to true and an unhandled exception occurred, ([#38](https://github.com/rollbar/node_rollbar/issues/38))
+
 **0.5.0**
 - Refactored most of the notifier code to use the async library.
   - Fixed myriad JSLint warnings/errors. 
