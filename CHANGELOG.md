@@ -1,5 +1,8 @@
 # Change Log
 
+**0.5.2**
+- Collect `process.argv` and `process.pid` as part of the 'server' metadata
+
 **0.5.1**
 - Fixed a bug that occurred if `exitOnUncaught` was set to true and an unhandled exception occurred, ([#38](https://github.com/rollbar/node_rollbar/issues/38))
 
