@@ -1,5 +1,8 @@
 # Change Log
 
+**0.5.3**
+- Fix bug that was causing an infinite loop while building the payload for request objects.
+
 **0.5.2**
 - Collect `process.argv` and `process.pid` as part of the 'server' metadata
 

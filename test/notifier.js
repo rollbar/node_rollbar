@@ -13,45 +13,6 @@ var ACCESS_TOKEN = '8802be7c990a4922beadaaefb6e0327b';
 rollbar.init(ACCESS_TOKEN, {environment: 'playground'});
 
 
-var b = {
-  'handleError with a normal error': {
-    topic: function () {
-      var test = function () {
-        var x = thisVariableIsNotDefined;
-      };
-      try {
-        test();
-      } catch (e) {
-        notifier.handleError(e, this.callback);
-      }
-    },
-    'verify no error is returned': function (err) {
-      assert.isNull(err);
-    }
-  }
-};
-
-
-var b2 = {
-  'handleError with a normal error 2': {
-    topic: function () {
-      var test = function () {
-        var x = thisVariableIsNotDefined;
-      };
-      try {
-        test();
-      } catch (e) {
-        notifier.handleError(e, this.callback);
-      }
-    },
-    'verify no error is returned': function (err) {
-      assert.isNull(err);
-    }
-  }
-};
-var suite = vows.describe('notifier').addBatch(b).addBatch(b2).export(module, {error: false});
-
-/*
 var suite = vows.describe('notifier').addBatch({
   'handleError with a normal error': {
     topic: function () {
@@ -105,6 +66,14 @@ var suite = vows.describe('notifier').addBatch({
       }
     },
     'verify the error was sent': function (err) {
+      assert.isNull(err);
+    }
+  },
+  'reportMessage with a valid request object': {
+    topic: function () {
+      notifier.reportMessage('test', 'debug', {url: 'http://localhost/foo'}, this.callback);
+    },
+    'verify no error is returned': function (err) {
       assert.isNull(err);
     }
   },
@@ -267,4 +236,3 @@ var suite = vows.describe('notifier').addBatch({
     }
   }
 }).export(module, {error: false});
-*/
