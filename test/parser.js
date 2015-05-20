@@ -26,7 +26,7 @@ var suite = vows.describe('parser').addBatch({
 
       return parser.parseException(error, this.callback);
     },
-    'parse it with withou errors': function(err, parsedObj) {
+    'parse it with without errors': function(err, parsedObj) {
       assert.equal(parsedObj.message, '[object Object]');
     }
   },
