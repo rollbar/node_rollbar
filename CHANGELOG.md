@@ -1,5 +1,8 @@
 # Change Log
 
+**0.5.4**
+- Bugfix: Cast `error.message` to `String`. Test objects as Error arguments.
+
 **0.5.3**
 - Fix bug that was causing an infinite loop while building the payload for request objects.
 
