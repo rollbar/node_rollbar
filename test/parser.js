@@ -113,6 +113,16 @@ var suite = vows.describe('parser').addBatch({
     },
     'parse the exception with parseException': parseAndVerifyException(true)
   },
+  'Create new Error with object as message': {
+    topic: function() {
+      var error = new Error({foo: 'bar'});
+
+      return parser.parseException(error, this.callback);
+    },
+    'parse it with without errors': function(err, parsedObj) {
+      assert.equal(parsedObj.message, '[object Object]');
+    }
+  },
   'Create a new Error in this file': {
     topic: function () {
       // NOTE: Don't change this next line of code since we verify the context line
