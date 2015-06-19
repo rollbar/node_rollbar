@@ -2,11 +2,55 @@
 
 "use strict";
 
-var api = require('./lib/api');
-var notifier = require('./lib/notifier');
-var parser = require('./lib/parser');
+var Api = require('./lib/api');
+var Notifier = require('./lib/notifier');
 
-var initialized = false;
+var Rollbar = function() {
+  var api, notifier;
+  var initialized = false;
+
+  Object.defineProperties(this, {
+    _api: {
+      set: function(val) {
+        api = val;
+      }
+    },
+    _initialized: {
+      set: function(val) {
+        initialized = val;
+      }
+    },
+    _notifier: {
+      set: function(val) {
+        notifier = val;
+      }
+    },
+    api: {
+      enumerable: true,
+      get: function() {
+        return api;
+      }
+    },
+    initialized: {
+      enumerable: true,
+      get: function() {
+        return initialized;
+      }
+    },
+    notifier: {
+      enumerable: true,
+      get: function() {
+        return notifier;
+      }
+    },
+  });
+}
+
+Rollbar.prototype.create = function(accessToken, options) {
+  var rollbar = new Rollbar();
+  rollbar.init(accessToken, options);
+  return rollbar;
+}
 
 /**
  *
@@ -63,7 +107,7 @@ var initialized = false;
  *     });
  */
 
-exports.init = function (accessToken, options) {
+Rollbar.prototype.init = function (accessToken, options) {
   /*
    * Initialize the rollbar library.
    *
@@ -80,7 +124,8 @@ exports.init = function (accessToken, options) {
    *  codeVersion - the version or revision of your code
    *  
    */
-  if (!initialized) {
+
+  if (!this.initialized) {
     if (!accessToken) {
       console.error('[Rollbar] Missing access_token.');
       return;
@@ -89,12 +134,104 @@ exports.init = function (accessToken, options) {
     options = options || {};
     options.environment = options.environment || process.env.NODE_ENV || 'unspecified';
 
-    api.init(accessToken, options);
-    notifier.init(api, options);
-    initialized = true;
+    var api = this._api = new Api(accessToken, options);
+    var notifier = this._notifier = new Notifier(api, options);
+
+    Object.defineProperties(this, {
+      reportMessage: {
+        value: notifier.reportMessage.bind(notifier),
+        enumerable: true
+      },
+      reportMessageWithPayloadData: {
+        value: notifier.reportMessageWithPayloadData.bind(notifier),
+        enumerable: true
+      },
+      handleError: {
+        value: notifier.handleError.bind(notifier),
+        enumerable: true
+      },
+      handleErrorWithPayloadData: {
+        value: notifier.handleErrorWithPayloadData.bind(notifier),
+        enumerable: true
+      }
+    });
+
+    this._initialized = true;
   }
 };
 
+
+Rollbar.prototype.errorHandler = function (accessToken, options) {
+  /*
+   * A middleware handler for connect and express.js apps. For a list
+   * of supported options, see the init() docs above.
+   *
+   * All exceptions thrown from inside an express or connect get/post/etc... handler
+   * will be sent to rollbar when this middleware is installed.
+   */
+  this.init(accessToken, options);
+  return function (err, req, res, next) {
+    var cb = function (rollbarErr) {
+      if (rollbarErr) {
+        console.error('[Rollbar] Error reporting to rollbar, ignoring: ' + rollbarErr);
+      }
+      return next(err, req, res);
+    };
+
+    if (!err) {
+      return next(err, req, res);
+    }
+
+    if (err instanceof Error) {
+      return this.notifier.handleError(err, req, cb);
+    }
+
+    return this.notifier.reportMessage('Error: ' + err, 'error', req, cb);
+  };
+};
+
+
+Rollbar.prototype.handleUncaughtExceptions = function (accessToken, options) {
+  /*
+   * Registers a handler for the process.uncaughtException event.
+   *
+   * If options.exitOnUncaughtException is set to true, the notifier will
+   * immediately send the uncaught exception + all queued items to rollbar,
+   * then call process.exit(1).
+   *
+   * Note: The node.js authors advise against using these type of handlers.
+   * More info: http://nodejs.org/api/process.html#process_event_uncaughtexception
+   *
+   */
+
+  // Default to not exiting on uncaught exceptions unless options.exitOnUncaughtException is set.
+  options = options || {};
+  var exitOnUncaught = options.exitOnUncaughtException === undefined ?
+        false : !!options.exitOnUncaughtException;
+  delete options.exitOnUncaughtException;
+
+  this.init(accessToken, options);
+
+  if (this.initialized) {
+    process.on('uncaughtException', function (err) {
+      console.error('[Rollbar] Handling uncaught exception.');
+      console.error(err);
+
+      this.notifier.handleError(err, function (err) {
+        if (err) {
+          console.error('[Rollbar] Encountered an error while handling an uncaught exception.');
+          console.error(err);
+        }
+
+        if (exitOnUncaught) {
+          process.exit(1);
+        }
+      });
+    });
+  } else {
+    console.error('[Rollbar] Rollbar is not initialized. Uncaught exceptions will not be tracked.');
+  }
+};
 
 /*
  * reportMessage(message, level, request, callback)
@@ -124,7 +261,6 @@ exports.init = function (accessToken, options) {
  *  });
  *
  */
-exports.reportMessage = notifier.reportMessage;
 
 
 /*
@@ -148,7 +284,6 @@ exports.reportMessage = notifier.reportMessage;
  *  });
  *
  */
-exports.reportMessageWithPayloadData = notifier.reportMessageWithPayloadData;
 
 /*
  * handleError(err, request, callback)
@@ -172,7 +307,6 @@ exports.reportMessageWithPayloadData = notifier.reportMessageWithPayloadData;
  *  rollbar.handleError(new Error("invalid request!"), req);
  *
  */
-exports.handleError = notifier.handleError;
 
 /*
  * handleErrorWithPayloadData(err, payloadData, request, callback)
@@ -197,81 +331,8 @@ exports.handleError = notifier.handleError;
  *     // error was queued/sent to rollbar
  *   });
  */
-exports.handleErrorWithPayloadData = notifier.handleErrorWithPayloadData;
 
 
-exports.errorHandler = function (accessToken, options) {
-  /*
-   * A middleware handler for connect and express.js apps. For a list
-   * of supported options, see the init() docs above.
-   *
-   * All exceptions thrown from inside an express or connect get/post/etc... handler
-   * will be sent to rollbar when this middleware is installed.
-   */
-  exports.init(accessToken, options);
-  return function (err, req, res, next) {
-    var cb = function (rollbarErr) {
-      if (rollbarErr) {
-        console.error('[Rollbar] Error reporting to rollbar, ignoring: ' + rollbarErr);
-      }
-      return next(err, req, res);
-    };
+var globalRollbar = new Rollbar();
 
-    if (!err) {
-      return next(err, req, res);
-    }
-
-    if (err instanceof Error) {
-      return notifier.handleError(err, req, cb);
-    }
-
-    return notifier.reportMessage('Error: ' + err, 'error', req, cb);
-  };
-};
-
-
-exports.handleUncaughtExceptions = function (accessToken, options) {
-  /*
-   * Registers a handler for the process.uncaughtException event.
-   *
-   * If options.exitOnUncaughtException is set to true, the notifier will
-   * immediately send the uncaught exception + all queued items to rollbar,
-   * then call process.exit(1).
-   *
-   * Note: The node.js authors advise against using these type of handlers.
-   * More info: http://nodejs.org/api/process.html#process_event_uncaughtexception
-   *
-   */
-
-  // Default to not exiting on uncaught exceptions unless options.exitOnUncaughtException is set.
-  options = options || {};
-  var exitOnUncaught = options.exitOnUncaughtException === undefined ?
-        false : !!options.exitOnUncaughtException;
-  delete options.exitOnUncaughtException;
-
-  exports.init(accessToken, options);
-
-  if (initialized) {
-    process.on('uncaughtException', function (err) {
-      console.error('[Rollbar] Handling uncaught exception.');
-      console.error(err);
-
-      notifier.handleError(err, function (err) {
-        if (err) {
-          console.error('[Rollbar] Encountered an error while handling an uncaught exception.');
-          console.error(err);
-        }
-
-        if (exitOnUncaught) {
-          process.exit(1);
-        }
-      });
-    });
-  } else {
-    console.error('[Rollbar] Rollbar is not initialized. Uncaught exceptions will not be tracked.');
-  }
-};
-
-
-exports.api = api;
-exports.notifier = notifier;
+module.exports = globalRollbar;

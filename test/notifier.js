@@ -5,13 +5,11 @@
 var assert = require('assert');
 var vows = require('vows');
 
-var notifier = require('../lib/notifier');
-var rollbar = require('../rollbar');
-
 var ACCESS_TOKEN = '8802be7c990a4922beadaaefb6e0327b';
 
+var rollbar = require('../rollbar');
 rollbar.init(ACCESS_TOKEN, {environment: 'playground'});
-
+var notifier = rollbar.notifier;
 
 var suite = vows.describe('notifier').addBatch({
   'handleError with a normal error': {
@@ -100,10 +98,11 @@ var suite = vows.describe('notifier').addBatch({
     topic: function () {
       var callback = this.callback;
       return callback(null,
-          notifier._scrubRequestHeaders(['cookie'], {
+          notifier._scrubRequestHeaders({
             cookie: 'remove=me',
             otherHeader: 'test'
-          }));
+          }, { scrubHeaders: ['cookie'] })
+        );
     },
     'verify cookie is scrubbed': function (err, headers) {
       assert.equal(headers.cookie, '*********');
@@ -114,11 +113,12 @@ var suite = vows.describe('notifier').addBatch({
     topic: function () {
       var callback = this.callback;
       return callback(null,
-          notifier._scrubRequestHeaders(['cookie', 'password'], {
+          notifier._scrubRequestHeaders({
             cookie: 'remove=me',
             password: 'secret',
             otherHeader: 'test'
-          }));
+          }, { scrubHeaders: ['cookie', 'password'] })
+        );
     },
     'verify all scrub fields are scrubbed': function (err, headers) {
       assert.equal(headers.cookie, '*********');
@@ -130,7 +130,7 @@ var suite = vows.describe('notifier').addBatch({
     topic: function () {
       var callback = this.callback;
       return callback(null,
-          notifier._scrubRequestParams(undefined, {
+          notifier._scrubRequestParams({
             password: 'secret',
             confirm_password: 'secret',
             otherParam: 'test'
@@ -146,12 +146,13 @@ var suite = vows.describe('notifier').addBatch({
     topic: function () {
       var callback = this.callback;
       return callback(null,
-          notifier._scrubRequestParams(['nullValue', 'undefinedValue', 'emptyValue'], {
+          notifier._scrubRequestParams({
             nullValue: null,
             undefinedValue: undefined,
             emptyValue: '',
             goodValue: 'goodValue'
-          }));
+          }, { scrubFields: ['nullValue', 'undefinedValue', 'emptyValue'] })
+        );
     },
     'verify fields are scrubbed': function (err, params) {
       assert.equal(params.nullValue, null);
