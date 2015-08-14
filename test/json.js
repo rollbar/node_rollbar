@@ -5,12 +5,12 @@
 var assert = require('assert');
 var vows = require('vows');
 
-var notifier = require('../lib/notifier');
-var rollbar = require('../rollbar');
-
 var ACCESS_TOKEN = '8802be7c990a4922beadaaefb6e0327b';
 
+var rollbar = require('../rollbar');
 rollbar.init(ACCESS_TOKEN, {environment: 'playground'});
+
+var notifier = rollbar.notifier;
 
 var suite = vows.describe('json').addBatch({
   'should handle circular object references': {
