@@ -1,5 +1,8 @@
 # Change Log
 
+**0.5.5**
+- Bugfix: Fix `handleError()` to work with Strings.
+
 **0.5.4**
 - Bugfix: Cast `error.message` to `String`. Test objects as Error arguments.
 
