@@ -44,6 +44,15 @@ var suite = vows.describe('notifier').addBatch({
       assert.isNull(err);
     }
   },
+  'handleErrorWithPayloadData with an array': {
+    topic: function () {
+      notifier.handleErrorWithPayloadData([1, 2, 3, "I'm broken"], {level: "warning"}, this.callback);
+    },
+    'verify an error is returned': function (err) {
+      assert.isNotNull(err);
+      assert(err.toString().indexOf("I'm broken") > -1);
+    }
+  },
   'handleError with an Error that has a missing stack': {
     topic: function () {
       var e = new Error('test error');
