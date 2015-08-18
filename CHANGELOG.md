@@ -1,5 +1,8 @@
 # Change Log
 
+**0.5.6**
+- Describe the original error a bit better when `handleErrorWithPayloadData()` couldn't recognize the err type.
+
 **0.5.5**
 - Bugfix: Fix `handleError()` to work with Strings.
 
