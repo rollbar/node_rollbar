@@ -69,6 +69,26 @@ var suite = vows.describe('notifier').addBatch({
       assert.isNull(err);
     }
   },
+  'handleError with a String': {
+    topic: function () {
+      notifier.handleError('Some string', this.callback);
+    },
+    'verify the error was sent': function (err) {
+      assert.isNull(err);
+    }
+  },
+  'handleError with a thrown String': {
+    topic: function () {
+      try {
+        throw 'Fake error';
+      } catch (e) {
+        notifier.handleError(e, this.callback);
+      }
+    },
+    'verify the error was sent': function (err) {
+      assert.isNull(err);
+    }
+  },
   'reportMessage with a valid request object': {
     topic: function () {
       notifier.reportMessage('test', 'debug', {url: 'http://localhost/foo'}, this.callback);
