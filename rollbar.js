@@ -81,7 +81,7 @@ exports.init = function (accessToken, options) {
    *  
    */
   if (!initialized) {
-    if (!accessToken) {
+    if (!accessToken && options.enabled !== false) {
       console.error('[Rollbar] Missing access_token.');
       return;
     }
