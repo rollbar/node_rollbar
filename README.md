@@ -250,9 +250,9 @@ Default: `true`
 
 See the [examples](https://github.com/rollbar/node_rollbar/tree/master/examples) directory for more use cases.
 
-### `sails.js`
+### Sails.js
 
-For a full example of setting up a new `Sails` project with Rollbar integration see the [`sails.js` demo project](https://github.com/rollbar/rollbar-sailsjs-example).
+For a full example of setting up a new Sails.js project with Rollbar integration see [rollbar-sailsjs-example](https://github.com/rollbar/rollbar-sailsjs-example).
 
 ## Help / Support
 
