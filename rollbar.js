@@ -81,12 +81,12 @@ exports.init = function (accessToken, options) {
    *  
    */
   if (!initialized) {
+    options = options || {};
     if (!accessToken && options.enabled !== false) {
       console.error('[Rollbar] Missing access_token.');
       return;
     }
 
-    options = options || {};
     options.environment = options.environment || process.env.NODE_ENV || 'unspecified';
 
     api.init(accessToken, options);
