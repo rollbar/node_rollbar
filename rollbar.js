@@ -78,6 +78,7 @@ exports.init = function (accessToken, options) {
    *    source files on rollbar
    *  branch - the branch in your version control system for this code
    *  codeVersion - the version or revision of your code
+   *  enabled - Default: true - determines if errors gets reported to Rollbar
    *  
    */
   if (!initialized) {
