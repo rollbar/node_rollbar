@@ -1,5 +1,8 @@
 # Change Log
 
+**0.5.7**
+- Fix bug fetching request protocol. See [#56](https://github.com/rollbar/node_rollbar/pull/56)
+
 **0.5.6**
 - Describe the original error a bit better when `handleErrorWithPayloadData()` couldn't recognize the err type.
 

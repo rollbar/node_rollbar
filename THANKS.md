@@ -5,5 +5,6 @@ Huge thanks to the following contributors (by github username). For the most up-
 - [calvinalvin](https://github.com/calvinalvin)
 - [dan-manges](https://github.com/dan-manges)
 - [jpgarcia](https://github.com/jpgarcia)
+- [sloops77](https://github.com/sloops77)
 - [soellman](https://github.com/soellman)
 - [thomblake](https://github.com/thomblake)
