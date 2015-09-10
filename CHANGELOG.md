@@ -1,5 +1,8 @@
 # Change Log
 
+**0.5.8**
+- Fix bug that caused some frames to not report context lines. See [#52](https://github.com/rollbar/node_rollbar/pull/52)
+
 **0.5.7**
 - Fix bug fetching request protocol. See [#56](https://github.com/rollbar/node_rollbar/pull/56)
 
