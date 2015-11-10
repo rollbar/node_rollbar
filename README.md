@@ -243,6 +243,12 @@ Default: `[]`
   
 Default: `true`
   </dd>
+
+  <dt>enabled</dt>
+  <dd>Sets whether reporting of errors to Rollbar is enabled
+
+Default: `true`
+  </dd>
   </dl>
 
 
