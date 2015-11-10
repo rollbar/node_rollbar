@@ -9,3 +9,4 @@ Huge thanks to the following contributors (by github username). For the most up-
 - [soellman](https://github.com/soellman)
 - [thomblake](https://github.com/thomblake)
 - [bjyoungblood](https://github.com/bjyoungblood)
+- [Koblaid](https://github.com/Koblaid)
