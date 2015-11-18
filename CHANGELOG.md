@@ -1,5 +1,8 @@
 # Change Log
 
+**0.5.10**
+- Fixes a bug with the `enabled` option. See [#63](https://github.com/rollbar/node_rollbar/pull/63)
+
 **0.5.9**
 - Adds an `enabled` option. See [#54](https://github.com/rollbar/node_rollbar/pull/54)
 
