@@ -18,29 +18,29 @@ var initialized = false;
  *
  * Example usage:
  *
- *  Express - 
+ *  Express -
  *
  *     var express = require('express');
  *     var rollbar = require('rollbar');
- * 
+ *
  *     var app = express();
- *    
+ *
  *     app.get('/', function (req, res) {
  *       ...
  *     });
- *    
+ *
  *     // Use the rollbar error handler to send exceptions to your rollbar account
  *     app.use(rollbar.errorHandler('ROLLBAR_ACCESS_TOKEN'));
- * 
+ *
  *     app.listen(6943);
  *
- *  Standalone - 
+ *  Standalone -
  *
  *     var rollbar = require('rollbar');
  *     rollbar.init('ROLLBAR_ACCESS_TOKEN');
  *     rollbar.reportMessage('Hello world', 'debug');
  *
- *  Uncaught exceptions - 
+ *  Uncaught exceptions -
  *
  *     var rollbar = require('rollbar');
  *     rollbar.handleUncaughtExceptions('ROLLBAR_ACCESS_TOKEN');
@@ -55,7 +55,7 @@ var initialized = false;
  *       }
  *     });
  *
- *  Track people - 
+ *  Track people -
  *
  *     app.get('/', function (req, res) {
  *       req.userId = 12345; // or req.user_id
@@ -79,7 +79,7 @@ exports.init = function (accessToken, options) {
    *  branch - the branch in your version control system for this code
    *  codeVersion - the version or revision of your code
    *  enabled - Default: true - determines if errors gets reported to Rollbar
-   *  
+   *
    */
   if (!initialized) {
     options = options || {};
@@ -192,7 +192,7 @@ exports.handleError = notifier.handleError;
  *  Examples:
  *
  *   rollbar.handleError(new Error("Could not connect to database"), {level: "warning"});
- *   rollbar.handleError(new Error("Could not connect to database"), 
+ *   rollbar.handleError(new Error("Could not connect to database"),
  *    {custom: {someKey: "its value, otherKey: ["other", "value"]}});
  *   rollbar.handleError(new Error("error message"), {}, req, function (err) {
  *     // error was queued/sent to rollbar
@@ -276,3 +276,4 @@ exports.handleUncaughtExceptions = function (accessToken, options) {
 
 exports.api = api;
 exports.notifier = notifier;
+exports.parser = parser;
