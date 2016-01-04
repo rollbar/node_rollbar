@@ -1,5 +1,9 @@
 # Change Log
 
+**0.5.11**
+- Send more useful data when `handleError()` is called with a plain Object. See [#65](https://github.com/rollbar/node_rollbar/pull/65)
+- Expose `parser` instance. See [#64](https://github.com/rollbar/node_rollbar/pull/64)
+
 **0.5.10**
 - Fixes a bug with the `enabled` option. See [#63](https://github.com/rollbar/node_rollbar/pull/63)
 
