@@ -1,5 +1,8 @@
 # Change Log
 
+**0.5.12**
+- Added link into verbose logging output to Rollbar item. See [#70](https://github.com/rollbar/node_rollbar/pull/70)
+
 **0.5.11**
 - Send more useful data when `handleError()` is called with a plain Object. See [#65](https://github.com/rollbar/node_rollbar/pull/65)
 - Expose `parser` instance. See [#64](https://github.com/rollbar/node_rollbar/pull/64)
