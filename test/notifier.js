@@ -106,6 +106,21 @@ var suite = vows.describe('notifier').addBatch({
       assert.isNull(err);
     }
   },
+
+  'reportMessage with a req.body as a plain object': {
+    topic: function () {
+      var request = {};
+      request.body = Object.create(null);
+      request.body.foo = 'bar';
+      request.url = 'http://localhost/foo';
+      request.method = 'POST';
+
+      notifier.reportMessage('test', 'debug', request, this.callback);
+    },
+    'verify no error is returned': function (err, data, resp) {
+      assert.deepEqual(data.request.POST, {foo: 'bar'});
+    }
+  },
   'reportMessage with invalid request object': {
     topic: function () {
       notifier.reportMessage('test', 'debug', 1, this.callback);
