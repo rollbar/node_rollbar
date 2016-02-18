@@ -1,5 +1,8 @@
 # Change Log
 
+**0.5.13**
+- Fix buildRequestData when req.body is a plain object. See [#72](https://github.com/rollbar/node_rollbar/pull/72)
+
 **0.5.12**
 - Added link into verbose logging output to Rollbar item. See [#70](https://github.com/rollbar/node_rollbar/pull/70)
 
