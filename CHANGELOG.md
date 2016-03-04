@@ -1,5 +1,8 @@
 # Change Log
 
+**0.5.14**
+- Fix jslint warnings. See [#75](https://github.com/rollbar/node_rollbar/pull/75)
+
 **0.5.13**
 - Fix buildRequestData when req.body is a plain object. See [#72](https://github.com/rollbar/node_rollbar/pull/72)
 
