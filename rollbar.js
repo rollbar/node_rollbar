@@ -2,6 +2,7 @@
 
 "use strict";
 
+var logger = require('./lib/logger');
 var api = require('./lib/api');
 var notifier = require('./lib/notifier');
 var parser = require('./lib/parser');
@@ -84,7 +85,7 @@ exports.init = function (accessToken, options) {
   if (!initialized) {
     options = options || {};
     if (!accessToken && options.enabled !== false) {
-      console.error('[Rollbar] Missing access_token.');
+      logger.error('Missing access_token.');
       return;
     }
 
@@ -213,7 +214,7 @@ exports.errorHandler = function (accessToken, options) {
   return function (err, req, res, next) {
     var cb = function (rollbarErr) {
       if (rollbarErr) {
-        console.error('[Rollbar] Error reporting to rollbar, ignoring: ' + rollbarErr);
+        logger.error('Error reporting to rollbar, ignoring: ' + rollbarErr);
       }
       return next(err, req, res);
     };
@@ -254,13 +255,13 @@ exports.handleUncaughtExceptions = function (accessToken, options) {
 
   if (initialized) {
     process.on('uncaughtException', function (err) {
-      console.error('[Rollbar] Handling uncaught exception.');
-      console.error(err);
+      logger.error('Handling uncaught exception.');
+      logger.error(err);
 
       notifier.handleError(err, function (err) {
         if (err) {
-          console.error('[Rollbar] Encountered an error while handling an uncaught exception.');
-          console.error(err);
+          logger.error('Encountered an error while handling an uncaught exception.');
+          logger.error(err);
         }
 
         if (exitOnUncaught) {
@@ -269,7 +270,7 @@ exports.handleUncaughtExceptions = function (accessToken, options) {
       });
     });
   } else {
-    console.error('[Rollbar] Rollbar is not initialized. Uncaught exceptions will not be tracked.');
+    logger.error('Rollbar is not initialized. Uncaught exceptions will not be tracked.');
   }
 };
 
