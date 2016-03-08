@@ -10,3 +10,4 @@ Huge thanks to the following contributors (by github username). For the most up-
 - [thomblake](https://github.com/thomblake)
 - [bjyoungblood](https://github.com/bjyoungblood)
 - [Koblaid](https://github.com/Koblaid)
+- [tremby](https://github.com/tremby)
