@@ -241,6 +241,13 @@ Default: `[]`
 Default: `true`
   </dd>
 
+  <dt>minimumLevel</dt>
+  <dd>Sets the minimum severity level of messages to report to Rollbar
+
+Default: `debug` (i.e. all messages will be sent)
+Valid levels, in order of severity: `critical`, `error`, `warning`, `info`, `debug`
+  </dd>
+
   <dt>enabled</dt>
   <dd>Sets whether reporting of errors to Rollbar is enabled
 
