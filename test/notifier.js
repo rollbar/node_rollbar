@@ -6,6 +6,7 @@ var assert = require('assert');
 var vows = require('vows');
 
 var notifier = require('../lib/notifier');
+var api = require('../lib/api');
 var rollbar = require('../rollbar');
 
 var ACCESS_TOKEN = '8802be7c990a4922beadaaefb6e0327b';
@@ -277,6 +278,109 @@ var suite = vows.describe('notifier').addBatch({
     },
     'verify the IP': function (ip) {
       assert.equal(ip, undefined);
+    }
+  },
+  'levelGteMinimum called with default minimum level and "info" in payload': {
+    topic: function () {
+      var item = {
+        payload: {
+          level: 'info'
+        }
+      };
+      return this.callback(notifier._levelGteMinimum(item));
+    },
+    'verify the item was not blocked': function (tf) {
+      assert.equal(tf, true);
+    }
+  },
+  'levelGteMinimum called with default minimum level and no level in payload': {
+    topic: function () {
+      var item = {
+        payload: {}
+      };
+      return this.callback(notifier._levelGteMinimum(item));
+    },
+    'verify the item was not blocked': function (tf) {
+      assert.equal(tf, true);
+    }
+  },
+  'levelGteMinimum called with default minimum level and no payload': {
+    topic: function () {
+      var item = {};
+      return this.callback(notifier._levelGteMinimum(item));
+    },
+    'verify the item was not blocked': function (tf) {
+      assert.equal(tf, true);
+    }
+  },
+  'levelGteMinimum called with "error" minimum level and "info" in payload': {
+    topic: function () {
+      var item = {
+        payload: {
+          level: "info"
+        }
+      };
+      notifier.init(api, {minimumLevel: "error"});
+      return this.callback(notifier._levelGteMinimum(item));
+    },
+    'verify the item was blocked': function (tf) {
+      assert.equal(tf, false);
+    }
+  },
+  'levelGteMinimum called with "info" minimum level and "info" in payload': {
+    topic: function () {
+      var item = {
+        payload: {
+          level: "info"
+        }
+      };
+      notifier.init(api, {minimumLevel: "info"});
+      return this.callback(notifier._levelGteMinimum(item));
+    },
+    'verify the item was not blocked': function (tf) {
+      assert.equal(tf, true);
+    }
+  },
+  'levelGteMinimum called with "FOO" minimum level and "info" in payload': {
+    topic: function () {
+      var item = {
+        payload: {
+          level: "info"
+        }
+      };
+      notifier.init(api, {minimumLevel: "FOO"});
+      return this.callback(notifier._levelGteMinimum(item));
+    },
+    'verify the item was not blocked': function (tf) {
+      assert.equal(tf, true);
+    }
+  },
+  'levelGteMinimum called with "info" minimum level and "FOO" in payload': {
+    topic: function () {
+      var item = {
+        payload: {
+          level: "FOO"
+        }
+      };
+      notifier.init(api, {minimumLevel: "info"});
+      return this.callback(notifier._levelGteMinimum(item));
+    },
+    'verify the item was blocked': function (tf) {
+      assert.equal(tf, false);
+    }
+  },
+  'levelGteMinimum called with "FOO" minimum level and "FOO" in payload': {
+    topic: function () {
+      var item = {
+        payload: {
+          level: "FOO"
+        }
+      };
+      notifier.init(api, {minimumLevel: "FOO"});
+      return this.callback(notifier._levelGteMinimum(item));
+    },
+    'verify the item was not blocked': function (tf) {
+      assert.equal(tf, true);
     }
   }
 }).export(module, {error: false});
