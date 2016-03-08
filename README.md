@@ -238,9 +238,6 @@ Default: `['passwd', 'password', 'secret', 'confirm_password', 'password_confirm
 Default: `[]`
   </dd>
   
-  <dt>verbose</dt>
-  <dd>Sets whether or not to log extra info/debug messages
-  
 Default: `true`
   </dd>
 
@@ -250,6 +247,10 @@ Default: `true`
 Default: `true`
   </dd>
   </dl>
+
+### Console output
+
+To show operational messages, include `Rollbar:*` (or, for only some messages, `Rollbar:log` or `Rollbar:error`) in your `DEBUG` environment variable.
 
 
 ## Examples
