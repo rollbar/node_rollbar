@@ -145,7 +145,7 @@ var suite = vows.describe('notifier').addBatch({
     topic: function () {
       var callback = this.callback;
       return callback(null,
-          notifier._scrubRequestHeaders(['cookie'], {
+          notifier._scrubRequestHeaders(null, {
             cookie: 'remove=me',
             otherHeader: 'test'
           }));

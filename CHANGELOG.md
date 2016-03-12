@@ -1,5 +1,8 @@
 # Change Log
 
+**0.5.16**
+- Added a bunch of auth headers to the list of default scrubbed headers. See [#71](https://github.com/rollbar/node_rollbar/pull/71)
+
 **0.5.15**
 - Replaces `console.log/error()` calls with the `debug` library. See [#74](https://github.com/rollbar/node_rollbar/pull/74)
 - Adds a new configuration option for `minimumLevel`. See [#76](https://github.com/rollbar/node_rollbar/pull/76)
