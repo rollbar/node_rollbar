@@ -251,6 +251,53 @@ Default: `true`
   </dd>
   </dl>
 
+### Nested exceptions
+
+The Rollbar API support sending to it nested exceptions, so you can have an error `NetworkTimeout` but the reported error is `PurchaseFailed` both will appear in Rollbar as nested. You can then known that a `PurchaseFailed` error occurred and the cause of it.
+
+Because JavaScript doesn't support built-in nested errors, we provide a `rollbar.Error` class that you can inherit from, so you can send to the Rollbar API nested exceptions. Here an example:
+
+```javascript
+var rollbar = require('./rollbar');
+var util = require('util');
+
+
+function NetworkTimeout(message, nested) {
+  rollbar.Error.call(this, message, nested);
+}
+
+util.inherits(NetworkTimeout, rollbar.Error);
+
+
+function PurchaseFailed(message, nested) {
+  rollbar.Error.call(this, message, nested);
+}
+
+util.inherits(PurchaseFailed, rollbar.Error);
+
+
+function sendPurchase(data, cb) {
+  var err = new NetworkTimeout('Error sending data to payment gateway');
+
+  cb(err, null);
+}
+
+
+function doPurchase(data) {
+  sendPurchase(data, function(err, res) {
+    if (err) {
+      rollbar.handleError(new PurchaseFailed('Purchase has failed', err));
+    }
+  });
+}
+
+doPurchase({
+  id: 10,
+  user_id: 1,
+  amount: 5
+});
+```
+
 
 ## Examples
 
