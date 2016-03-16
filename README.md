@@ -267,7 +267,7 @@ The Rollbar API support sending to it nested exceptions, so you can have an erro
 Because JavaScript doesn't support built-in nested errors, we provide a `rollbar.Error` class that you can inherit from, so you can send to the Rollbar API nested exceptions. Here an example:
 
 ```javascript
-var rollbar = require('./rollbar');
+var rollbar = require('rollbar');
 var util = require('util');
 
 
