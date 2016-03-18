@@ -11,5 +11,5 @@ node_js:
 # We do not test against 0.7 because
 #- "0.7"
 
-before_install:
+-before_install:
   - npm conf set strict-ssl false
