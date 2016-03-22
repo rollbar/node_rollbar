@@ -20,3 +20,6 @@ before_script:
 
 script:
   - if [[ $COVERAGE == "true" ]]; then npm run test-and-coverage   ; else npm run test; fi
+
+after_script:
+  - if [[ $COVERAGE == "true" ]]; then codeclimate-test-reporter < coverage/lcov.info; fi
