@@ -262,9 +262,11 @@ To show operational messages, include `Rollbar:*` (or, for only some messages, `
 
 ### Nested exceptions
 
-The Rollbar API support sending to it nested exceptions, so you can have an error `NetworkTimeout` but the reported error is `PurchaseFailed` both will appear in Rollbar as nested. You can then known that a `PurchaseFailed` error occurred and the cause of it.
+The Rollbar API supports nested exceptions. This allows you to report an error along with the original cause as a nested exception.
 
-Because JavaScript doesn't support built-in nested errors, we provide a `rollbar.Error` class that you can inherit from, so you can send to the Rollbar API nested exceptions. Here an example:
+In order to create a nested error you should use the rollbar.Error class provided by this library.
+
+E.g.
 
 ```javascript
 var rollbar = require('rollbar');
