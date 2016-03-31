@@ -1,5 +1,9 @@
 # Change Log
 
+**0.6.0**
+- Support nested errors. See [#81](https://github.com/rollbar/node_rollbar/pull/81)
+- Add istanbul and codeclimate-test-reporter. See [#83](https://github.com/rollbar/node_rollbar/pull/83)
+
 **0.5.16**
 - Added a bunch of auth headers to the list of default scrubbed headers. See [#71](https://github.com/rollbar/node_rollbar/pull/71)
 
