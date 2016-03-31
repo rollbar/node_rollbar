@@ -6,6 +6,7 @@ var logger = require('./lib/logger');
 var api = require('./lib/api');
 var notifier = require('./lib/notifier');
 var parser = require('./lib/parser');
+var RollbarError = require('./lib/error');
 
 var initialized = false;
 
@@ -278,3 +279,4 @@ exports.handleUncaughtExceptions = function (accessToken, options) {
 exports.api = api;
 exports.notifier = notifier;
 exports.parser = parser;
+exports.Error = RollbarError;

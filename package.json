@@ -30,8 +30,9 @@
     "async": "~1.2.1"
   },
   "devDependencies": {
-    "express": "*",
+    "sinon": "1.16.1",
     "jade": "~0.27.7",
+    "express": "*",
     "vows": "~0.7.0"
   }
 }

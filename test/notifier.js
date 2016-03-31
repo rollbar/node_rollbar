@@ -2,16 +2,25 @@
 
 "use strict";
 
+var util = require('util');
 var assert = require('assert');
 var vows = require('vows');
+var sinon = require('sinon');
 
-var notifier = require('../lib/notifier');
-var api = require('../lib/api');
 var rollbar = require('../rollbar');
+var api = require('../lib/api');
+var notifier = require('../lib/notifier');
+
 
 var ACCESS_TOKEN = '8802be7c990a4922beadaaefb6e0327b';
 
 rollbar.init(ACCESS_TOKEN, {environment: 'playground'});
+
+function CustomError(message, nested) {
+  rollbar.Error.call(this, message, nested);
+}
+
+util.inherits(CustomError, rollbar.Error);
 
 
 var suite = vows.describe('notifier').addBatch({
@@ -30,6 +39,61 @@ var suite = vows.describe('notifier').addBatch({
       assert.isNull(err);
     }
   },
+
+  'handleError with a nested error': {
+    topic: function() {
+      sinon.spy(api, 'postItem');
+
+      var test = function () {
+        var x = thisVariableIsNotDefined;
+      };
+      try {
+        test();
+      } catch (e) {
+        var err = new CustomError('nested-message', e);
+        notifier.handleError(err, this.callback);
+      }
+    },
+
+    'it sends the correct data': function() {
+      assert(api.postItem.calledWith(
+        {
+          timestamp: sinon.match.number,
+          environment: 'playground',
+          level: 'error',
+          language: 'javascript',
+          framework: 'node-js',
+          uuid: sinon.match.string,
+          notifier: { name: 'node_rollbar', version: sinon.match.string },
+          server: {
+            host: sinon.match.string,
+            argv: sinon.match.array,
+            pid: sinon.match.number
+          },
+          body: {
+            trace_chain: [
+              {
+                frames: sinon.match.array,
+                exception: {
+                  class: 'CustomError',
+                  message: 'nested-message'
+                }
+              },
+              {
+                frames: sinon.match.array,
+                exception:
+                {
+                  class: 'ReferenceError',
+                  message: 'thisVariableIsNotDefined is not defined'
+                }
+              }
+            ]
+          }
+        }
+      ));
+    }
+  },
+
   'handleErrorWithPayloadData with a normal error': {
     topic: function () {
       var test = function () {

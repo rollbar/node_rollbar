@@ -260,6 +260,56 @@ Default: `true`
 To show operational messages, include `Rollbar:*` (or, for only some messages, `Rollbar:log` or `Rollbar:error`) in your `DEBUG` environment variable.
 
 
+### Nested exceptions
+
+The Rollbar API supports nested exceptions. This allows you to report an error along with the original cause as a nested exception.
+
+In order to create a nested error you should use the rollbar.Error class provided by this library.
+
+E.g.
+
+```javascript
+var rollbar = require('rollbar');
+var util = require('util');
+
+
+function NetworkTimeout(message, nested) {
+  rollbar.Error.call(this, message, nested);
+}
+
+util.inherits(NetworkTimeout, rollbar.Error);
+
+
+function PurchaseFailed(message, nested) {
+  rollbar.Error.call(this, message, nested);
+}
+
+util.inherits(PurchaseFailed, rollbar.Error);
+
+
+function sendPurchase(data, cb) {
+  var err = new NetworkTimeout('Error sending data to payment gateway');
+
+  cb(err, null);
+}
+
+
+function doPurchase(data) {
+  sendPurchase(data, function(err, res) {
+    if (err) {
+      rollbar.handleError(new PurchaseFailed('Purchase has failed', err));
+    }
+  });
+}
+
+doPurchase({
+  id: 10,
+  user_id: 1,
+  amount: 5
+});
+```
+
+
 ## Examples
 
 See the [examples](https://github.com/rollbar/node_rollbar/tree/master/examples) directory for more use cases.
