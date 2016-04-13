@@ -232,10 +232,14 @@ exports.errorHandler = function (accessToken, options) {
   };
 };
 
+exports.handleUncaughtExceptionsAndRejections = function (accessToken, options) {
+  exports.handleUncaughtExceptions(accessToken, options);
+  exports.handleUnhandledRejections(accessToken, options);
+};
 
 exports.handleUncaughtExceptions = function (accessToken, options) {
   /*
-   * Registers a handler for the process.uncaughtException event.
+   * Registers a handler for the process.uncaughtException event
    *
    * If options.exitOnUncaughtException is set to true, the notifier will
    * immediately send the uncaught exception + all queued items to rollbar,
@@ -274,6 +278,33 @@ exports.handleUncaughtExceptions = function (accessToken, options) {
     logger.error('Rollbar is not initialized. Uncaught exceptions will not be tracked.');
   }
 };
+
+exports.handleUnhandledRejections = function (accessToken, options) {
+  /*
+   * Registers a handler for the process.unhandledRejection event.
+   */
+
+  options = options || {};
+
+  exports.init(accessToken, options);
+
+  if (initialized) {
+    process.on('unhandledRejection', function (reason) {
+      logger.error('Handling unhandled rejection.');
+      logger.error(reason);
+
+      notifier.handleError(reason, function (err) {
+        if (err) {
+          logger.error('Encountered an error while handling an unhandled rejection.');
+          logger.error(err);
+        }
+      })
+    });
+  } else {
+    logger.error('Rollbar is not initialized. Uncaught rejections will not be tracked.');
+  }
+};
+
 
 
 exports.api = api;

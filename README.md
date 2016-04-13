@@ -87,6 +87,20 @@ var options = {
 rollbar.handleUncaughtExceptions("POST_SERVER_ITEM_ACCESS_TOKEN", options);
 ```
 
+#### Unhandled rejections
+
+Rollbar can also be registered as a handler for any unhandled Promise rejections in your Node process:
+
+```js
+rollbar.handleUnhandledRejections("POST_SERVER_ITEM_ACCESS_TOKEN");
+```
+
+To simplify enabling both handlers, you can use the `handleUncaughtExceptionsAndRejections` method.
+
+```js
+rollbar.handleUncaughtExceptionsAndRejections("POST_SERVER_ITEM_ACCESS_TOKEN", options);
+```
+
 ### Caught exceptions
 
 To report an exception that you have caught, use [`handleError`](https://github.com/rollbar/node_rollbar/blob/master/rollbar.js#L152) or the full-powered [`handleErrorWithPayloadData`](https://github.com/rollbar/node_rollbar/blob/master/rollbar.js#L176):
