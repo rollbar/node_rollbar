@@ -16,8 +16,8 @@
   "license": "MIT",
   "main": "rollbar",
   "scripts": {
-    "test": "vows --spec test/*",
-    "test-and-coverage": "istanbul cover -- vows --spec test/error.js test/json.js test/notifier.js test/parser.js test/uninitialized.js"
+    "test": "vows --spec test/*.js",
+    "test-and-coverage": "istanbul cover -- vows --spec test/*.js"
   },
   "engines": {
     "node": ">= 0.6.0"
