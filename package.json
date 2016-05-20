@@ -17,7 +17,7 @@
   "main": "rollbar",
   "scripts": {
     "test": "vows --spec test/*",
-    "test-and-coverage": "istanbul cover -- vows --spec test/*"
+    "test-and-coverage": "istanbul cover -- vows --spec test/error.js test/json.js test/notifier.js test/parser.js test/uninitialized.js"
   },
   "engines": {
     "node": ">= 0.6.0"
@@ -30,9 +30,10 @@
     "async": "~1.2.1"
   },
   "devDependencies": {
-    "sinon": "1.16.1",
-    "jade": "~0.27.7",
     "express": "*",
+    "jade": "~0.27.7",
+    "rewire": "^2.5.1",
+    "sinon": "1.16.1",
     "vows": "~0.7.0"
   }
 }
