@@ -1,7 +1,7 @@
 var util = require('util');
 var assert = require('assert');
 var vows = require('vows');
-var rewire = require('rewire');
+var decache = require('decache');
 
 var ACCESS_TOKEN = '8802be7c990a4922beadaaefb6e0327b';
 
@@ -10,13 +10,10 @@ var ACCESS_TOKEN = '8802be7c990a4922beadaaefb6e0327b';
 var suite = vows.describe('rollbar.reportMessage').addBatch({
   'without init()': {
     topic: function() {
-      var notifier = rewire('../lib/notifier');
+      decache('../lib/notifier');
+      var notifier = require('../lib/notifier');
 
-      var callback = this.callback;
-      notifier.__with__({initialized: false, apiClient: undefined})(function () {
-        notifier.handleError(new Error('hello world'), null, callback);
-      });
-
+      notifier.handleError(new Error('hello world'), null, this.callback);
     },
 
     'should return a Rollbar uninitialized error': function(err) {
@@ -25,8 +22,11 @@ var suite = vows.describe('rollbar.reportMessage').addBatch({
 
     'now initialize and call reportMessage()': {
       topic: function() {
-        var notifier = rewire('../lib/notifier');
-        var api = rewire('../lib/api');
+        decache('../lib/notifier');
+        decache('../lib/api');
+
+        var notifier = require('../lib/notifier');
+        var api = require('../lib/api');
 
         api.init(ACCESS_TOKEN, {});
         notifier.init(api, {});

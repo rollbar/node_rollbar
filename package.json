@@ -30,9 +30,9 @@
     "async": "~1.2.1"
   },
   "devDependencies": {
+    "decache": "^3.0.5",
     "express": "*",
     "jade": "~0.27.7",
-    "rewire": "^2.5.1",
     "sinon": "1.16.1",
     "vows": "~0.7.0"
   }
