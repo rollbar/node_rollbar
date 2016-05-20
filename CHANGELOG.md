@@ -1,5 +1,8 @@
 # Change Log
 
+**0.6.1**
+- Fix a bug which was causing an error to be thrown when Rollbar was used before being initialized. See [#86](https://github.com/rollbar/node_rollbar/pull/86)
+
 **0.6.0**
 - Support nested errors. See [#81](https://github.com/rollbar/node_rollbar/pull/81)
 - Add istanbul and codeclimate-test-reporter. See [#83](https://github.com/rollbar/node_rollbar/pull/83)
@@ -56,7 +59,7 @@
 
 **0.5.0**
 - Refactored most of the notifier code to use the async library.
-  - Fixed myriad JSLint warnings/errors. 
+  - Fixed myriad JSLint warnings/errors.
 - Fixed various bugs related to the different `handler` options.
 - Added `X-Rollbar-Access-Token` header for faster responses from the server.
 - Fix bug where the app could shut down before all data was sent to Rollbar and/or the callbacks called, ([#34](https://github.com/rollbar/node_rollbar/issues/34))
@@ -73,7 +76,7 @@
 - Removed rollbar.shutdown()
   - Now that there are no longer any `setInterval()` calls, there is no need to wait for anything from the Rollbar
     library in order to shutdown cleanly.
-    
+
 
 **0.4.5**
 - Fix a bug that was causing the notifier to not catch all uncaught exceptions. ([#36](https://github.com/rollbar/node_rollbar/pull/36))
