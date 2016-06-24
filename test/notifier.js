@@ -43,7 +43,7 @@ var suite = vows.describe('notifier').addBatch({
   'handleError with a circular reference': {
     topic: "",
     'does not throw an exception': function(topic) {
-      const circularError = { error: {} };
+      var circularError = { error: {} };
       circularError.error.hello = circularError.error
       notifier.handleError(circularError);
     }
