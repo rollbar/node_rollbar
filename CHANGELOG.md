@@ -1,5 +1,8 @@
 # Change Log
 
+**0.6.3**
+- Fix a bug which caused the exception class to not be properly reported. See [#95](https://github.com/rollbar/node_rollbar/pull/95), [#96](https://github.com/rollbar/node_rollbar/pull/96)
+
 **0.6.2**
 - Added support for unhandled rejections. See [#85](https://github.com/rollbar/node_rollbar/pull/85)
 
