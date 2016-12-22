@@ -1,5 +1,8 @@
 # Change Log
 
+**(TBD)**
+- Replace deprecated `node-uuid` package with `uuid`.  See [#102](https://github.com/rollbar/node_rollbar/pull/102) — thanks, [@gastonelhordoy](https://github.com/gastonelhordoy) !
+
 **0.6.3**
 - Fix a bug which caused the exception class to not be properly reported. See [#95](https://github.com/rollbar/node_rollbar/pull/95), [#96](https://github.com/rollbar/node_rollbar/pull/96)
 
