@@ -40,6 +40,15 @@ var suite = vows.describe('notifier').addBatch({
     }
   },
 
+  'handleError with a circular reference': {
+    topic: "",
+    'does not throw an exception': function(topic) {
+      var circularError = { error: {} };
+      circularError.error.hello = circularError.error
+      notifier.handleError(circularError);
+    }
+  },
+
   'handleError with a nested error': {
     topic: function() {
       sinon.spy(api, 'postItem');
