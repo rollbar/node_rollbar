@@ -58,7 +58,7 @@ In your main application, require and initialize using your access_token::
 var rollbar = require("rollbar");
 rollbar.init("POST_SERVER_ITEM_ACCESS_TOKEN");
 ```
-    
+
 Other options can be passed into the init() function using a second parameter. E.g.:
 
 ```js
@@ -87,6 +87,20 @@ var options = {
 rollbar.handleUncaughtExceptions("POST_SERVER_ITEM_ACCESS_TOKEN", options);
 ```
 
+#### Unhandled rejections
+
+Rollbar can also be registered as a handler for any unhandled Promise rejections in your Node process:
+
+```js
+rollbar.handleUnhandledRejections("POST_SERVER_ITEM_ACCESS_TOKEN");
+```
+
+To simplify enabling both handlers, you can use the `handleUncaughtExceptionsAndRejections` method.
+
+```js
+rollbar.handleUncaughtExceptionsAndRejections("POST_SERVER_ITEM_ACCESS_TOKEN", options);
+```
+
 ### Caught exceptions
 
 To report an exception that you have caught, use [`handleError`](https://github.com/rollbar/node_rollbar/blob/master/rollbar.js#L152) or the full-powered [`handleErrorWithPayloadData`](https://github.com/rollbar/node_rollbar/blob/master/rollbar.js#L176):
@@ -99,11 +113,11 @@ try {
   someCode();
 } catch (e) {
   rollbar.handleError(e);
-  
+
   // if you have a request object (or a function that returns one), pass it as the second arg
   // see below for details about what the request object is expected to be
   rollbar.handleError(e, request);
-  
+
   // you can also pass a callback, which will be called upon success/failure
   rollbar.handleError(e, function(err2) {
     if (err2) {
@@ -112,7 +126,7 @@ try {
       // success
     }
   });
-  
+
   // if you have a request and a callback, pass the callback last
   rollbar.handleError(e, request, callback);
 
@@ -168,7 +182,7 @@ If you're using Express, just pass the express request object. If you're using s
 - `url`: the URL starting after the domain name (e.g. `"/index.html?foo=bar"`)
 - `method`: the request method (e.g. `"GET"`)
 - `body`: the request body as a string
-- `route`: an object containing a 'path' key, which will be used as the "context" for the event (e.g. `{path: "home/index"}`)
+- `route`: an object containing a 'path' key, which will be used as the "context" for the event (e.g. `{"path": "home/index"}`)
 
 Sensitive param names will be scrubbed from the request body and, if `scrubHeaders` is configured, headers. See the `scrubFields` and `scrubHeaders` configuration options for details.
 
@@ -178,7 +192,7 @@ If your application has authenticated users, you can track which user ("person" 
 
 If you're using the [Passport](http://passportjs.org/) authentication library, this will happen automatically when you pass the request object (which will have "user" attached). Otherwise, attach one of these keys to the `request` object described in the previous section:
 
-- `rollbar_person` or `user`: an object like `{id: "123", username: "foo", email: "foo@example.com"}`. id is required, others are optional.
+- `rollbar_person` or `user`: an object like `{"id": "123", "username": "foo", "email": "foo@example.com"}`. id is required, others are optional.
 - `user_id`: the user id as an integer or string, or a function which when called will return the user id
 
 Note: in Rollbar, the `id` is used to uniquely identify a person; `email` and `username` are supplemental and will be overwritten whenever a new value is received for an existing `id`. The `id` is a string up to 40 characters long.
@@ -189,71 +203,77 @@ Note: in Rollbar, the `id` is used to uniquely identify a person; `email` and `u
 `rollbar.init("access token", optionsObj)` takes the following configuration options:
 
   <dl>
-  
-  <dt>branch</dt>
-  <dd>The branch in your version control system for this code.
+<dt>branch
+</dt>
+<dd>The branch in your version control system for this code.
 
 e.g. `'master'`
-  </dd>
-  
-  <dt>codeVersion</dt>
-  <dd>The version or revision of your code.
+</dd>
+
+<dt>codeVersion
+</dt>
+<dd>The version or revision of your code.
 
 e.g. `'868ff435d6a480929103452e5ebe8671c5c89f77'`
   </dd>
-  
-  <dt>endpoint</dt>
-  <dd>The rollbar API base url.
+
+<dt>endpoint
+</dt>
+<dd>The rollbar API base url.
 
 Default: `'https://api.rollbar.com/api/1/'`
-  </dd>
-  
-  <dt>environment</dt>
-  <dd>The environment the code is running in, e.g. "production"
+</dd>
+
+<dt>environment
+</dt>
+<dd>The environment the code is running in, e.g. "production"
 
 Default: `'unspecified'`
-  </dd>
-  
-  <dt>host</dt>
-  <dd>The hostname of the server the node.js process is running on.
+</dd>
+
+<dt>host
+</dt>
+<dd>The hostname of the server the node.js process is running on.
 
 Default: hostname returned from `os.hostname()`
-  </dd>
+</dd>
 
-  <dt>root</dt>
-  <dd>The path to your code, (not including any trailing slash) which will be used to link source files on Rollbar.
+<dt>root
+</dt>
+<dd>The path to your code, (not including any trailing slash) which will be used to link source files on Rollbar.
 
 e.g. `'/Users/bob/Development'`
-  </dd>
-  
-  <dt>scrubFields</dt>
-  <dd>List of field names to scrub out of the request body (POST params). Values will be replaced with asterisks. If overriding, make sure to list all fields you want to scrub, not just fields you want to add to the default. Param names are converted to lowercase before comparing against the scrub list.
+</dd>
+
+<dt>scrubFields
+</dt>
+<dd>List of field names to scrub out of the request body (POST params). Values will be replaced with asterisks. If overriding, make sure to list all fields you want to scrub, not just fields you want to add to the default. Param names are converted to lowercase before comparing against the scrub list.
 
 Default: `['passwd', 'password', 'secret', 'confirm_password', 'password_confirmation']`
-  </dd>
-  
-  <dt>scrubHeaders</dt>
-  <dd>List of header names to scrub out of the request headers. Works like scrubFields.
-  
-Default: `[]`
-  </dd>
-  
-Default: `true`
-  </dd>
+</dd>
 
-  <dt>minimumLevel</dt>
-  <dd>Sets the minimum severity level of messages to report to Rollbar
+<dt>scrubHeaders
+</dt>
+<dd>List of header names to scrub out of the request headers. Works like scrubFields.
+
+Default: `[]`
+</dd>
+
+<dt>minimumLevel
+</dt>
+<dd>Sets the minimum severity level of messages to report to Rollbar
 
 Default: `debug` (i.e. all messages will be sent)
 Valid levels, in order of severity: `critical`, `error`, `warning`, `info`, `debug`
-  </dd>
+</dd>
 
-  <dt>enabled</dt>
-  <dd>Sets whether reporting of errors to Rollbar is enabled
+<dt>enabled
+</dt>
+<dd>Sets whether reporting of errors to Rollbar is enabled
 
 Default: `true`
-  </dd>
-  </dl>
+</dd>
+</dl>
 
 ### Console output
 

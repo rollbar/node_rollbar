@@ -1,5 +1,14 @@
 # Change Log
 
+**(TBD)**
+- Replace deprecated `node-uuid` package with `uuid`.  See [#102](https://github.com/rollbar/node_rollbar/pull/102) — thanks, [@gastonelhordoy](https://github.com/gastonelhordoy) !
+
+**0.6.3**
+- Fix a bug which caused the exception class to not be properly reported. See [#95](https://github.com/rollbar/node_rollbar/pull/95), [#96](https://github.com/rollbar/node_rollbar/pull/96)
+
+**0.6.2**
+- Added support for unhandled rejections. See [#85](https://github.com/rollbar/node_rollbar/pull/85)
+
 **0.6.1**
 - Fix a bug which was causing an error to be thrown when Rollbar was used before being initialized. See [#86](https://github.com/rollbar/node_rollbar/pull/86)
 

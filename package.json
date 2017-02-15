@@ -1,7 +1,7 @@
 {
   "name": "rollbar",
   "description": "A standalone (Node.js) client for Rollbar",
-  "homepage": "http://rollbar.com/docs/items_node/",
+  "homepage": "https://rollbar.com/docs/notifier/node_rollbar/",
   "keywords": [
     "rollbar",
     "exception",
@@ -10,7 +10,7 @@
     "ratchetio",
     "ratchet"
   ],
-  "version": "0.6.1",
+  "version": "0.6.3",
   "repository": "git://github.com/rollbar/node_rollbar.git",
   "author": "Rollbar, Inc. <support@rollbar.com>",
   "license": "MIT",
@@ -23,7 +23,7 @@
     "node": ">= 0.6.0"
   },
   "dependencies": {
-    "node-uuid": "1.4.x",
+    "uuid": "3.0.x",
     "lru-cache": "~2.2.1",
     "debug": "2.2.0",
     "json-stringify-safe": "~5.0.0",

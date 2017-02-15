@@ -11,3 +11,4 @@ Huge thanks to the following contributors (by github username). For the most up-
 - [bjyoungblood](https://github.com/bjyoungblood)
 - [Koblaid](https://github.com/Koblaid)
 - [tremby](https://github.com/tremby)
+- [corps](https://github.com/corps)

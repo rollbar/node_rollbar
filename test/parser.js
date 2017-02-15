@@ -123,6 +123,39 @@ var suite = vows.describe('parser').addBatch({
       assert.equal(parsedObj.message, '[object Object]');
     }
   },
+  'Create new Error with name as a number': {
+    topic: function() {
+      var error = new Error('test');
+      error.name = 42;
+
+      return parser.parseException(error, this.callback);
+    },
+    'parse it with without errors': function(err, parsedObj) {
+      assert.strictEqual(parsedObj.class, '42');
+    }
+  },
+  'Create new Error with name as undefined': {
+    topic: function() {
+      var error = new Error('test');
+      error.name = undefined;
+
+      return parser.parseException(error, this.callback);
+    },
+    'parse it with without errors': function(err, parsedObj) {
+      assert.strictEqual(parsedObj.class, '<unknown>');
+    }
+  },
+  'Create new Error with message as undefined': {
+    topic: function() {
+      var error = new Error('test');
+      error.message = undefined;
+
+      return parser.parseException(error, this.callback);
+    },
+    'parse it with without errors': function(err, parsedObj) {
+      assert.strictEqual(parsedObj.message, '<no message>');
+    }
+  },
   'Create a new Error in this file': {
     topic: function () {
       // NOTE: Don't change this next line of code since we verify the context line
