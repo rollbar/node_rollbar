@@ -259,6 +259,15 @@ Default: `['passwd', 'password', 'secret', 'confirm_password', 'password_confirm
 Default: `[]`
 </dd>
 
+<dt>showUnhandledErrors
+</dt>
+<dd>Whether or not to show unhandled errors on the console before sending them to Rollbar.  By default, unhandled errors will be consumed and silently sent to Rollbar. 
+
+Default: `false`
+</dd>
+
+
+
 <dt>minimumLevel
 </dt>
 <dd>Sets the minimum severity level of messages to report to Rollbar
