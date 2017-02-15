@@ -255,10 +255,11 @@ var suite = vows.describe('notifier').addBatch({
     topic: function () {
       var callback = this.callback;
       return callback(null,
-          notifier._scrubRequestParams(['nullValue', 'undefinedValue', 'emptyValue'], {
+          notifier._scrubRequestParams(['nullValue', 'undefinedValue', 'emptyValue', 'password'], {
             nullValue: null,
             undefinedValue: undefined,
             emptyValue: '',
+            password: 'Sup3rs3kr3T',
             goodValue: 'goodValue'
           }));
     },
@@ -266,6 +267,7 @@ var suite = vows.describe('notifier').addBatch({
       assert.equal(params.nullValue, null);
       assert.equal(params.undefinedValue, undefined);
       assert.equal(params.emptyValue, '');
+      assert.equal(params.password, '******');
       assert.equal(params.goodValue, 'goodValue');
     }
   },
