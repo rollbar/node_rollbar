@@ -34,7 +34,14 @@ var suite = vows.describe('notifier').addBatch({
       var obj = {};
       for (var i=0; i < 50; i++)
         obj["test-"+i] = i*i;
-      notifier.reportMessageWithPayloadData('test', {context: obj}, null, this.callback);
+      var cb = this.callback;
+      notifier.reportMessageWithPayloadData('test', {context: obj}, null, function() {
+        // try an empty context too
+        notifier.reportMessageWithPayloadData('test', {context: {}}, null, function() {
+          // try an array context too
+          notifier.reportMessageWithPayloadData('test', {context: [1,2,3]}, null, cb);
+        });
+      });
     },
     'it does not throw an error': function(err) {
       // If the context was not intercepted and handled specially, an error resembling
@@ -52,9 +59,10 @@ var suite = vows.describe('notifier').addBatch({
         var call = api.postItem.getCall(i);
         if (call.args[0] && call.args[0].context) {
           hasContext = true;
-          assert(typeof call.args[0].context == 'string');
-          assert(call.args[0].context[0] == '{'); // make sure it was serialized
-          assert(call.args[0].context.length < 256); // make sure it was truncated
+          var context = call.args[0].context;
+          assert(typeof context == 'string');
+          assert(context[0] == '{' || context[0] == '['); // make sure it was serialized
+          assert(context.length < 256); // make sure it was truncated
         }
       }
       assert(hasContext);
