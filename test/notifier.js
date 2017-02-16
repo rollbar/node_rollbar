@@ -22,8 +22,45 @@ function CustomError(message, nested) {
 
 util.inherits(CustomError, rollbar.Error);
 
+sinon.spy(api, 'postItem');
 
 var suite = vows.describe('notifier').addBatch({
+
+  // A context is supposed to be a string.  If an object is passed in, verify that
+  // some transformation happens so it doesn't throw an error.
+  'context with an object': {
+    topic: function() {
+      // Set up a context object that will be >255 characters if serialized.
+      var obj = {};
+      for (var i=0; i < 50; i++)
+        obj["test-"+i] = i*i;
+      notifier.reportMessageWithPayloadData('test', {context: obj}, null, this.callback);
+    },
+    'it does not throw an error': function(err) {
+      // If the context was not intercepted and handled specially, an error resembling
+      // "Invalid format. data.context object value found, but a null is required"
+      // would have been thrown.  The assertion here is that no error is thrown.
+      assert.isNull(err);
+    },
+    'it serializes the context': function(err) {
+      // Because of the asynchronous nature of this test suite, I wasn't able to figure
+      // out a way to get a reference to the exact spy call for this topic.  As a work-
+      // around, I'm iterating over all the calls and making sure the contexts are all
+      // valid.  Not ideal, but the end result is the same.
+      var hasContext = false;
+      for (var i=0; i < api.postItem.callCount; i++) {
+        var call = api.postItem.getCall(i);
+        if (call.args[0] && call.args[0].context) {
+          hasContext = true;
+          assert(typeof call.args[0].context == 'string');
+          assert(call.args[0].context[0] == '{'); // make sure it was serialized
+          assert(call.args[0].context.length == 255); // make sure it was truncated
+        }
+      }
+      assert(hasContext);
+    }
+  },
+
   'handleError with a normal error': {
     topic: function () {
       var test = function () {
@@ -42,8 +79,6 @@ var suite = vows.describe('notifier').addBatch({
 
   'handleError with a nested error': {
     topic: function() {
-      sinon.spy(api, 'postItem');
-
       var test = function () {
         var x = thisVariableIsNotDefined;
       };
