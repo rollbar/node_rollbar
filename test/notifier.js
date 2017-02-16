@@ -54,7 +54,7 @@ var suite = vows.describe('notifier').addBatch({
           hasContext = true;
           assert(typeof call.args[0].context == 'string');
           assert(call.args[0].context[0] == '{'); // make sure it was serialized
-          assert(call.args[0].context.length == 255); // make sure it was truncated
+          assert(call.args[0].context.length < 256); // make sure it was truncated
         }
       }
       assert(hasContext);
