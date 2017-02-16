@@ -3,6 +3,7 @@
 **(TBD)**
 - Replace deprecated `node-uuid` package with `uuid`.  See [#102](https://github.com/rollbar/node_rollbar/pull/102) — thanks, [@gastonelhordoy](https://github.com/gastonelhordoy) !
 - Fixed a bug that accidentally exposed the length of scrubbed values.  See [#98](https://github.com/rollbar/node_rollbar/issues/98)
+- Serialize object/array values for data.context instead of throwing an error.  See [#73](https://github.com/rollbar/node_rollbar/issues/73)
 
 **0.6.3**
 - Fix a bug which caused the exception class to not be properly reported. See [#95](https://github.com/rollbar/node_rollbar/pull/95), [#96](https://github.com/rollbar/node_rollbar/pull/96)
