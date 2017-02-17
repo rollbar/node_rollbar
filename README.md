@@ -259,9 +259,9 @@ Default: `['passwd', 'password', 'secret', 'confirm_password', 'password_confirm
 Default: `[]`
 </dd>
 
-<dt>showUnhandledErrors
+<dt>showReportedMessageTraces
 </dt>
-<dd>Whether or not to show unhandled errors on the console before sending them to Rollbar.  By default, unhandled errors will be consumed and silently sent to Rollbar. 
+<dd>Whether or not to locally log manually-reported messages and related stack traces. 
 
 Default: `false`
 </dd>
