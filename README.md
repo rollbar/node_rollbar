@@ -245,6 +245,15 @@ Default: hostname returned from `os.hostname()`
 e.g. `'/Users/bob/Development'`
 </dd>
 
+<dt>proxy
+</dt>
+<dd>An object with settings to proxy the Rollbar API requests.  Useful if behind a corporate firewall.
+
+Example: `{host: 'proxy.mydomain.com', port: 8080}`
+
+Default: `undefined`
+</dd>
+
 <dt>scrubFields
 </dt>
 <dd>List of field names to scrub out of the request body (POST params). Values will be replaced with asterisks. If overriding, make sure to list all fields you want to scrub, not just fields you want to add to the default. Param names are converted to lowercase before comparing against the scrub list.
