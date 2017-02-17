@@ -22,8 +22,53 @@ function CustomError(message, nested) {
 
 util.inherits(CustomError, rollbar.Error);
 
+sinon.spy(api, 'postItem');
 
 var suite = vows.describe('notifier').addBatch({
+
+  // A context is supposed to be a string.  If an object is passed in, verify that
+  // some transformation happens so it doesn't throw an error.
+  'context with an object': {
+    topic: function() {
+      // Set up a context object that will be >255 characters if serialized.
+      var obj = {};
+      for (var i=0; i < 50; i++)
+        obj["test-"+i] = i*i;
+      var cb = this.callback;
+      notifier.reportMessageWithPayloadData('test', {context: obj}, null, function() {
+        // try an empty context too
+        notifier.reportMessageWithPayloadData('test', {context: {}}, null, function() {
+          // try an array context too
+          notifier.reportMessageWithPayloadData('test', {context: [1,2,3]}, null, cb);
+        });
+      });
+    },
+    'it does not throw an error': function(err) {
+      // If the context was not intercepted and handled specially, an error resembling
+      // "Invalid format. data.context object value found, but a null is required"
+      // would have been thrown.  The assertion here is that no error is thrown.
+      assert.isNull(err);
+    },
+    'it serializes the context': function(err) {
+      // Because of the asynchronous nature of this test suite, I wasn't able to figure
+      // out a way to get a reference to the exact spy call for this topic.  As a work-
+      // around, I'm iterating over all the calls and making sure the contexts are all
+      // valid.  Not ideal, but the end result is the same.
+      var hasContext = false;
+      for (var i=0; i < api.postItem.callCount; i++) {
+        var call = api.postItem.getCall(i);
+        if (call.args[0] && call.args[0].context) {
+          hasContext = true;
+          var context = call.args[0].context;
+          assert(typeof context == 'string');
+          assert(context[0] == '{' || context[0] == '['); // make sure it was serialized
+          assert(context.length < 256); // make sure it was truncated
+        }
+      }
+      assert(hasContext);
+    }
+  },
+
   'handleError with a normal error': {
     topic: function () {
       var test = function () {
@@ -40,10 +85,17 @@ var suite = vows.describe('notifier').addBatch({
     }
   },
 
+  'handleError with a circular reference': {
+    topic: "",
+    'does not throw an exception': function(topic) {
+      var circularError = { error: {} };
+      circularError.error.hello = circularError.error
+      notifier.handleError(circularError);
+    }
+  },
+
   'handleError with a nested error': {
     topic: function() {
-      sinon.spy(api, 'postItem');
-
       var test = function () {
         var x = thisVariableIsNotDefined;
       };
@@ -255,10 +307,11 @@ var suite = vows.describe('notifier').addBatch({
     topic: function () {
       var callback = this.callback;
       return callback(null,
-          notifier._scrubRequestParams(['nullValue', 'undefinedValue', 'emptyValue'], {
+          notifier._scrubRequestParams(['nullValue', 'undefinedValue', 'emptyValue', 'password'], {
             nullValue: null,
             undefinedValue: undefined,
             emptyValue: '',
+            password: 'Sup3rs3kr3T',
             goodValue: 'goodValue'
           }));
     },
@@ -266,6 +319,7 @@ var suite = vows.describe('notifier').addBatch({
       assert.equal(params.nullValue, null);
       assert.equal(params.undefinedValue, undefined);
       assert.equal(params.emptyValue, '');
+      assert.equal(params.password, '******');
       assert.equal(params.goodValue, 'goodValue');
     }
   },
