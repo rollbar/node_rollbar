@@ -268,6 +268,15 @@ Default: `['passwd', 'password', 'secret', 'confirm_password', 'password_confirm
 Default: `[]`
 </dd>
 
+<dt>showReportedMessageTraces
+</dt>
+<dd>Whether or not to locally log manually-reported messages and related stack traces. 
+
+Default: `false`
+</dd>
+
+
+
 <dt>minimumLevel
 </dt>
 <dd>Sets the minimum severity level of messages to report to Rollbar
