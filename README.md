@@ -49,6 +49,43 @@ app.use(rollbar.errorHandler('POST_SERVER_ITEM_ACCESS_TOKEN'));
 app.listen(6943);
 ```
 
+### Using Hapi
+
+```js
+#!/usr/bin/env node
+
+var Hapi = require('hapi');
+var server = new Hapi.Server();
+server.connection({ host:'localhost', port:8000 });
+
+// Begin Rollbar initialization code
+var rollbar = require('rollbar');
+rollbar.init('POST_SERVER_ITEM_ACCESS_TOKEN');
+server.on('request-error', function(request, error) {
+  // Note: before Hapi v8.0.0, this should be 'internalError' instead of 'request-error'
+  var cb = function(rollbarErr) {
+    if (rollbarErr)
+      console.error('Error reporting to rollbar, ignoring: '+rollbarErr);
+  };
+  if (error instanceof Error)
+    return rollbar.handleError(error, request, cb);
+  rollbar.reportMessage('Error: '+error, 'error', request, cb);
+});
+// End Rollbar initialization code
+
+server.route({
+  method: 'GET',
+  path:'/throw_error',
+  handler: function (request, reply) {
+    throw new Error('Example error manually thrown from route.');
+  }
+});
+server.start(function(err) {
+  if (err)
+    throw err;
+  console.log('Server running at:', server.info.uri);
+}); 
+```
 
 ### Standalone
 
