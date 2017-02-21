@@ -49,6 +49,43 @@ app.use(rollbar.errorHandler('POST_SERVER_ITEM_ACCESS_TOKEN'));
 app.listen(6943);
 ```
 
+### Using Hapi
+
+```js
+#!/usr/bin/env node
+
+var Hapi = require('hapi');
+var server = new Hapi.Server();
+server.connection({ host:'localhost', port:8000 });
+
+// Begin Rollbar initialization code
+var rollbar = require('rollbar');
+rollbar.init('POST_SERVER_ITEM_ACCESS_TOKEN');
+server.on('request-error', function(request, error) {
+  // Note: before Hapi v8.0.0, this should be 'internalError' instead of 'request-error'
+  var cb = function(rollbarErr) {
+    if (rollbarErr)
+      console.error('Error reporting to rollbar, ignoring: '+rollbarErr);
+  };
+  if (error instanceof Error)
+    return rollbar.handleError(error, request, cb);
+  rollbar.reportMessage('Error: '+error, 'error', request, cb);
+});
+// End Rollbar initialization code
+
+server.route({
+  method: 'GET',
+  path:'/throw_error',
+  handler: function (request, reply) {
+    throw new Error('Example error manually thrown from route.');
+  }
+});
+server.start(function(err) {
+  if (err)
+    throw err;
+  console.log('Server running at:', server.info.uri);
+}); 
+```
 
 ### Standalone
 
@@ -245,6 +282,15 @@ Default: hostname returned from `os.hostname()`
 e.g. `'/Users/bob/Development'`
 </dd>
 
+<dt>proxy
+</dt>
+<dd>An object with settings to proxy the Rollbar API requests.  Useful if behind a corporate firewall.
+
+Example: `{host: 'proxy.mydomain.com', port: 8080}`
+
+Default: `undefined`
+</dd>
+
 <dt>scrubFields
 </dt>
 <dd>List of field names to scrub out of the request body (POST params). Values will be replaced with asterisks. If overriding, make sure to list all fields you want to scrub, not just fields you want to add to the default. Param names are converted to lowercase before comparing against the scrub list.
@@ -258,6 +304,15 @@ Default: `['passwd', 'password', 'secret', 'confirm_password', 'password_confirm
 
 Default: `[]`
 </dd>
+
+<dt>showReportedMessageTraces
+</dt>
+<dd>Whether or not to locally log manually-reported messages and related stack traces. 
+
+Default: `false`
+</dd>
+
+
 
 <dt>minimumLevel
 </dt>
