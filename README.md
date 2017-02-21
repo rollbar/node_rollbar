@@ -338,6 +338,25 @@ See the [examples](https://github.com/rollbar/node_rollbar/tree/master/examples)
 
 For a full example of setting up a new Sails.js project with Rollbar integration see [rollbar-sailsjs-example](https://github.com/rollbar/rollbar-sailsjs-example).
 
+## Deploys
+
+This implementation of the Rollbar API also contains a stand-alone implementation of
+the deploy feature.  You can require and use deploy.js without needing to fully integrate
+and configure Rollbar as described above.  This is useful for scripted implementations
+which is the most likely use case for deployment tracking.
+
+Please refer to [the Rollbar API Spec](https://rollbar.com/docs/api/deploys/) for implementation
+details and deeper explanations of the options available.
+
+```javascript
+var deploy = require('rollbar/deploy');
+
+deploy.createDeploy('POST_SERVER_ITEM_ACCESS_TOKEN', {
+    environment: 'production',
+    revision: '1.2.3'
+  });
+```
+
 ## Help / Support
 
 If you have any questions, feedback, etc., drop us a line at support@rollbar.com
