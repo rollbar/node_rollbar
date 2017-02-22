@@ -11,6 +11,7 @@ var rollbar = require('../rollbar');
 var api = require('../lib/api');
 var notifier = require('../lib/notifier');
 
+var https = require('https');
 
 var ACCESS_TOKEN = '8802be7c990a4922beadaaefb6e0327b';
 
@@ -24,8 +25,27 @@ util.inherits(CustomError, rollbar.Error);
 
 sinon.spy(api, 'postItem');
 
-var suite = vows.describe('notifier').addBatch({
+// Making this a separate suite so it can use its own sinon sandbox
+// mode.  This is needed because in order to test that the pending
+// requests are queued, we need to stub http.request.  And if we do
+// that in the main tests, everything breaks.
+var sandbox = null;
+vows.describe('notifier pending requests').addBatch({
+  'pending requests': {
+    topic: function() {
+      assert(api.pendingRequestCount() == 0);
+      sandbox = sinon.sandbox.create();
+      sandbox.stub(https, 'request', function(){ /* do nothing */ });
+      notifier.handleError(new Error('test'), this.callback);
+    },
+    'it keeps track of pending requests': function() {
+      assert(api.pendingRequestCount() == 1);
+      sandbox.restore();
+    }
+  }
+}).export(module, {error: false});
 
+vows.describe('notifier').addBatch({
   // A context is supposed to be a string.  If an object is passed in, verify that
   // some transformation happens so it doesn't throw an error.
   'context with an object': {
