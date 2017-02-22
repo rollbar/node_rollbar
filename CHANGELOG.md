@@ -1,13 +1,14 @@
 # Change Log
 
 **(TBD)**
-- Replace deprecated `node-uuid` package with `uuid`.  See [#102](https://github.com/rollbar/node_rollbar/pull/102) — thanks, [@gastonelhordoy](https://github.com/gastonelhordoy) !
+- Replace deprecated `node-uuid` package with `uuid`.  See [#102](https://github.com/rollbar/node_rollbar/pull/102) — thanks, [@gastonelhordoy](https://github.com/gastonelhordoy)!
 - Added support for Rollbar deploys. See [#57](https://github.com/rollbar/node_rollbar/issues/57)
 - Added an option to show manually-reported errors on the console.  See [#94](https://github.com/rollbar/node_rollbar/issues/94)
 - Fixed a bug that accidentally exposed the length of scrubbed values.  See [#98](https://github.com/rollbar/node_rollbar/issues/98)
 - Serialize object/array values for data.context instead of throwing an error.  See [#73](https://github.com/rollbar/node_rollbar/issues/73)
 - Added the `retryInterval` option.  In the event of a connection failure, queue up errors and push them to the Rollbar API later.  See [#49](https://github.com/rollbar/node_rollbar/issues/49)
 - Added a `wait(cb)` function that executes the callback when there are no pending items in flight being sent to Rollbar [#39](https://github.com/rollbar/node_rollbar/issues/39) 
+- Fixed a bug in how we were extracting the client's IP address from requests. See [#104](https://github.com/rollbar/node_rollbar/issues/104) - thanks, [@modosc](https://github.com/modosc)!
 
 **0.6.3**
 - Fix a bug which caused the exception class to not be properly reported. See [#95](https://github.com/rollbar/node_rollbar/pull/95), [#96](https://github.com/rollbar/node_rollbar/pull/96)
