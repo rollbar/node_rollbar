@@ -391,6 +391,23 @@ doPurchase({
 });
 ```
 
+## Waiting on pending items
+
+There may be some cases where you need to do a hard `process.exit(1)`, but you also don't
+want to lose any errors that may be in-flight to Rollbar at the time.  That is where the
+`notifier.wait(cb)` function comes into play.  It will execute the callback when there are
+no pending items being sent to Rollbar.  It could execute immediately (if there are none
+pending), or it could take a few seconds while the queue is flushed.
+
+```javascript
+var rollbar = require('rollbar');
+rollbar.init(rollbarToken);
+rollbar.handleError('Test');
+rollbar.wait(function() {
+    console.log('Ok!  All errors have been pushed to Rollbar.');
+    process.exit(1);
+  });
+```
 
 ## Examples
 
