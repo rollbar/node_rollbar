@@ -366,7 +366,6 @@ vows.describe('notifier').addBatch({
       var dummyReq = {
         headers: {
           'x-real-ip': 'X-Real-Ip IP address',
-          'x-forwarded-for': 'X-Forwarded-For IP address'
         },
         connection: {
           remoteAddress: 'Connection IP address'
@@ -378,7 +377,7 @@ vows.describe('notifier').addBatch({
       assert.equal(ip, 'X-Real-Ip IP address');
     }
   },
-  'extractIp returns req.header["x-forwarded-for"] if x-real-ip doesn\'t exist': {
+  'extractIp returns req.header["x-forwarded-for"] if req.ip doesn\'t exist': {
     topic: function () {
       var dummyReq = {
         headers: {
@@ -394,11 +393,9 @@ vows.describe('notifier').addBatch({
       assert.equal(ip, 'X-Forwarded-For IP address');
     }
   },
-  'extractIp returns req.connection.remoteAddress x-forwarded-for doesn\'t exist': {
+  'extractIp returns req.connection.remoteAddress without ip headers': {
     topic: function () {
       var dummyReq = {
-        headers: {
-        },
         connection: {
           remoteAddress: 'Connection IP address'
         }
@@ -409,7 +406,48 @@ vows.describe('notifier').addBatch({
       assert.equal(ip, 'Connection IP address');
     }
   },
-  'extractIp doesn\'t crash if req.connection/req.headers doesn\'t exist': {
+  'extractIp returns req.socket.remoteAddress without ip headers': {
+    topic: function () {
+      var dummyReq = {
+        socket: {
+          remoteAddress: 'Connection IP address'
+        }
+      };
+      return this.callback(notifier._extractIp(dummyReq));
+    },
+    'verify the IP': function (ip) {
+      assert.equal(ip, 'Connection IP address');
+    }
+  },
+  'extractIp returns req.connection.socket.remoteAddress without ip headers': {
+    topic: function () {
+      var dummyReq = {
+        connection: {
+          socket: {
+            remoteAddress: 'Connection IP address'
+          }
+        },
+      };
+      return this.callback(notifier._extractIp(dummyReq));
+    },
+    'verify the IP': function (ip) {
+      assert.equal(ip, 'Connection IP address');
+    }
+  },
+  'extractIp returns req.info.remoteAddress without ip headers': {
+    topic: function () {
+      var dummyReq = {
+        info: {
+          remoteAddress: 'Connection IP address'
+        },
+      };
+      return this.callback(notifier._extractIp(dummyReq));
+    },
+    'verify the IP': function (ip) {
+      assert.equal(ip, 'Connection IP address');
+    }
+  },
+  'extractIp doesn\'t crash if req.connection/req.info/req.socket/req.headers doesn\'t exist': {
     topic: function () {
       var dummyReq = {};
       return this.callback(notifier._extractIp(dummyReq));
