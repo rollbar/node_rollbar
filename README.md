@@ -328,6 +328,13 @@ Valid levels, in order of severity: `critical`, `error`, `warning`, `info`, `deb
 
 Default: `true`
 </dd>
+
+<dt>retryInterval
+</dt>
+<dd>Number of milliseconds between retries.  If set, errors will be queued up in the event of a connection failure where we are unable to push the errors to Rollbar.  Once a connection has been re-established, the queue will be flushed.  If null, then connection failure will not be detected and errors will not be queued.
+
+Default: `null`
+</dd>
 </dl>
 
 ### Console output
