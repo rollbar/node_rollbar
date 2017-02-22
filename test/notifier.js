@@ -46,6 +46,29 @@ vows.describe('notifier pending requests').addBatch({
   }
 }).export(module, {error: false});
 
+var shutdownSandbox = null;
+vows.describe('notifier shutdown').addBatch({
+  'has pending requests': {
+    topic: function() {
+      assert(notifier.pendingItemsCount() == 0);
+      shutdownSandbox = sinon.sandbox.create();
+      shutdownSandbox.stub(https, 'request', function(){ /* do nothing */ });
+
+      notifier.handleError(new Error('test'));
+      assert(notifier.pendingItemsCount() == 1); // should have been enqueued synchronously
+
+      notifier.shutdown(this.callback);
+
+      notifier.handleError(new Error('test'));
+      assert(notifier.pendingItemsCount() == 2); // should have been enqueued synchronously
+    },
+    'it keeps track of pending requests': function() {
+      assert(notifier.pendingItemsCount() == 0); // callback should be called after all items are flushed
+      shutdownSandbox.restore();
+    }
+  }
+}).export(module, {error: false});
+
 vows.describe('notifier').addBatch({
   // A context is supposed to be a string.  If an object is passed in, verify that
   // some transformation happens so it doesn't throw an error.
