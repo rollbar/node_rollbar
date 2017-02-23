@@ -33,14 +33,38 @@ var sandbox = null;
 vows.describe('notifier pending requests').addBatch({
   'pending requests': {
     topic: function() {
-      assert(api.pendingRequestCount() == 0);
+      assert(notifier.pendingItemsCount() == 0);
       sandbox = sinon.sandbox.create();
       sandbox.stub(https, 'request', function(){ /* do nothing */ });
       notifier.handleError(new Error('test'), this.callback);
+      assert(notifier.pendingItemsCount() == 1); // should have been enqueued synchronously
     },
     'it keeps track of pending requests': function() {
-      assert(api.pendingRequestCount() == 1);
+      assert(notifier.pendingItemsCount() == 0); // should have been dequeued before callback is called
       sandbox.restore();
+    }
+  }
+}).export(module, {error: false});
+
+var waitSandbox = null;
+vows.describe('notifier wait').addBatch({
+  'has pending requests': {
+    topic: function() {
+      assert(notifier.pendingItemsCount() == 0);
+      waitSandbox = sinon.sandbox.create();
+      waitSandbox.stub(https, 'request', function(){ /* do nothing */ });
+
+      notifier.handleError(new Error('test'));
+      assert(notifier.pendingItemsCount() == 1); // should have been enqueued synchronously
+
+      notifier.wait(this.callback);
+
+      notifier.handleError(new Error('test'));
+      assert(notifier.pendingItemsCount() == 2); // should have been enqueued synchronously
+    },
+    'it keeps track of pending requests': function() {
+      assert(notifier.pendingItemsCount() == 0); // callback should be called after all items are flushed
+      waitSandbox.restore();
     }
   }
 }).export(module, {error: false});
