@@ -1,5 +1,8 @@
 # Change Log
 
+**0.6.5**
+- Bug fix for uuid dependency
+
 **0.6.4**
 - Replace deprecated `node-uuid` package with `uuid`.  See [#102](https://github.com/rollbar/node_rollbar/pull/102) — thanks, [@gastonelhordoy](https://github.com/gastonelhordoy)!
 - Added support for Rollbar deploys. See [#57](https://github.com/rollbar/node_rollbar/issues/57)
