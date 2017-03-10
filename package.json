@@ -28,7 +28,7 @@
     "json-stringify-safe": "~5.0.0",
     "lru-cache": "~2.2.1",
     "request-ip": "~1.2.3",
-    "uuid": "~3.0.1"
+    "uuid": "~3.0.0"
   },
   "devDependencies": {
     "express": "*",
