@@ -1,5 +1,12 @@
 # Change Log
 
+**0.6.6**
+  This repo is deprecated in favor of the upcoming 2.0.0 release found
+  [here](https://github.com/rollbar/rollbar.js). That library will be a universal javascript library
+  that can be used both in the browser and in a nodejs environment. This release is only to move the
+  latest pointer on npm back to a known good state in master before the release of rollbar.js 2.0
+  happens.
+
 **0.6.5**
 - Bug fix for uuid dependency
 
