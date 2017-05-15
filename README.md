@@ -5,6 +5,11 @@ Node.js library for reporting exceptions and other messages to [Rollbar](https:/
 
 <!-- Sub:[TOC] -->
 
+## Deprecated
+
+The library in this repo has been deprecated in favor of the universal library
+[here](https://github.com/rollbar/rollbar.js)
+
 ## Quick start
 
 ```js
